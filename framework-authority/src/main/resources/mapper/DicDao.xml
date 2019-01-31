@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.myland.framework.authority.dao.DicDao">
+
+    <insert id="insert" parameterType="Dic" useGeneratedKeys="true"
+            keyProperty="id">
+        INSERT INTO sys_dic
+        (
+        `BASE_ID`,
+        `NAME`,
+        `VAL`
+        )
+        VALUES
+        (
+        #{baseId},
+        #{name},
+        #{val}
+        )
+    </insert>
+
+    <delete id="deleteByPrimaryKey">
+        DELETE FROM sys_dic WHERE ID = #{value}
+    </delete>
+
+    <update id="updateByPrimaryKeySelective" parameterType="Dic">
+        UPDATE sys_dic
+        <set>
+            <if test="baseId != null">`BASE_ID` =
+                #{baseId},
+            </if>
+            <if test="name != null">`NAME` =
+                #{name},
+            </if>
+            <if test="val != null">`VAL` =
+                #{val},
+            </if>
+            <if test="used != null">`USED` =
+                #{used}
+            </if>
+        </set>
+        WHERE ID = #{id}
+    </update>
+
+    <select id="selectByPrimaryKey" resultType="Dic">
+        SELECT * FROM sys_dic WHERE ID = #{value}
+    </select>
+
+    <select id="selectList" resultType="Dic">
+        SELECT
+        sys_dic.*, sys_base_dic.NAME AS baseName, sys_base_dic.code AS baseCode
+        FROM sys_dic JOIN sys_base_dic ON sys_dic.base_id = sys_base_dic.id
+        <where>
+            <if test="baseId != null">
+                AND sys_dic.base_id = #{baseId}
+            </if>
+            <if test="name != null">
+                AND sys_dic.NAME LIKE CONCAT('%', #{name}, '%')
+            </if>
+            <if test="val != null">
+                AND sys_dic.VAL LIKE CONCAT('%', #{val}, '%')
+            </if>
+        </where>
+        ORDER BY ID DESC
+    </select>
+
+    <select id="selectAll" resultType="Dic">
+        SELECT * FROM sys_dic
+    </select>
+
+    <!-- 自定义sql -->
+
+    <!-- 检查同种字典大类下字典编码相同的数量 -->
+    <select id="selectCount4Uk" resultType="int">
+        SELECT
+        count(0)
+        FROM
+        sys_dic
+        WHERE
+        sys_dic.val = #{val}
+        AND sys_dic.base_id = #{baseId}
+        <if test="id != null">
+            AND sys_dic.id != #{id}
+        </if>
+    </select>
+
+    <select id="selectListByBaseDic" resultType="Dic">
+        SELECT * FROM sys_dic WHERE sys_dic.base_id = #{value}
+    </select>
+
+    <!-- 修改启用标志 -->
+    <update id="updateEnabled">
+        UPDATE
+        sys_dic
+        SET used = #{flag}
+        WHERE id IN
+        <foreach item="item" collection="ids" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+</mapper>

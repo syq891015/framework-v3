@@ -1,0 +1,6 @@
+# 开发环境配置
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/anling?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
+    username: root
+    password: 123

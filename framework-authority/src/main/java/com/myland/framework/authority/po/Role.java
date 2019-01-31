@@ -1,0 +1,53 @@
+package com.myland.framework.authority.po;
+
+import com.alibaba.fastjson.annotation.JSONField;
+import com.myland.framework.web.utils.validator.group.UpdateGroup;
+import lombok.Data;
+import org.apache.commons.lang3.ObjectUtils;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.util.Date;
+
+/**
+ * 角色
+ *
+ * @author SunYanQing
+ * @version 1.0
+ * @date 2018-11-30 16:29:35
+ */
+@Data
+public class Role {
+
+	/**
+	 * 主键ID
+	 */
+	@NotNull(groups = {UpdateGroup.class})
+	private Long id;
+	/**
+	 * 角色名称
+	 */
+	@NotBlank(message = "角色名称不能为空")
+	private String name;
+	/**
+	 * 角色描述
+	 */
+	private String description;
+	/**
+	 * 创建人
+	 */
+	private Long creator;
+	/**
+	 * 创建时间
+	 */
+	@JSONField(format = "yyyy-MM-dd HH:mm:ss")
+	private Date createTime;
+
+	public Date getCreateTime() {
+		return ObjectUtils.clone(createTime);
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = ObjectUtils.clone(createTime);
+	}
+}

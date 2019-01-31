@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.myland.framework.authority.dao.UserDao">
+
+    <insert id="insert" parameterType="User" useGeneratedKeys="true"
+            keyProperty="id">
+        INSERT INTO auth_user
+        (
+        `ACCOUNT`,
+        `PASSWD`,
+        `NAME`,
+        `SEX`,
+        `PHONE`,
+        `STATUS`,
+        `CREATOR`,
+        `MODIFIER`
+        `DELETED`,
+        )
+        VALUES
+        (
+        #{account},
+        #{passwd},
+        #{name},
+        #{sex},
+        #{phone},
+        #{status},
+        #{creator},
+        #{modifier}
+        #{deleted},
+        )
+    </insert>
+
+    <delete id="deleteByPrimaryKey">
+        DELETE FROM auth_user WHERE ID = #{value}
+    </delete>
+
+    <update id="updateByPrimaryKeySelective" parameterType="User">
+        UPDATE auth_user
+        <set>
+            <if test="account != null">`ACCOUNT` =
+                #{account},
+            </if>
+            <if test="passwd != null">`PASSWD` =
+                #{passwd},
+            </if>
+            <if test="name != null">`NAME` =
+                #{name},
+            </if>
+            <if test="sex != null">`SEX` =
+                #{sex},
+            </if>
+            <if test="phone != null">`PHONE` =
+                #{phone},
+            </if>
+            <if test="status != null">`STATUS` =
+                #{status},
+            </if>
+            <if test="creator != null">`CREATOR` =
+                #{creator},
+            </if>
+            <if test="createTime != null">`CREATE_TIME` =
+                #{createTime},
+            </if>
+            <if test="modifier != null">`MODIFIER` =
+                #{modifier},
+            </if>
+            <if test="deleted != null">`DELETED` =
+                #{deleted}
+            </if>
+        </set>
+        WHERE ID = #{id}
+    </update>
+
+    <select id="selectByPrimaryKey" resultType="User">
+        SELECT * FROM auth_user WHERE ID = #{value}
+    </select>
+
+    <select id="selectList" resultType="User">
+        SELECT * FROM auth_user
+        <where>
+            <if test="account != null">
+                AND auth_user.ACCOUNT LIKE CONCAT('%', #{account}, '%')
+            </if>
+            <if test="passwd != null">
+                AND auth_user.PASSWD LIKE CONCAT('%', #{passwd}, '%')
+            </if>
+            <if test="name != null">
+                AND auth_user.NAME LIKE CONCAT('%', #{name}, '%')
+            </if>
+            <if test="phone != null">
+                AND auth_user.PHONE LIKE CONCAT('%', #{phone}, '%')
+            </if>
+            <if test="beginCreateTime != null">
+                AND auth_user.CREATE_TIME >= #{beginCreateTime}
+            </if>
+            <if test="endCreateTime != null">
+                AND #{endCreateTime} >= auth_user.CREATE_TIME
+            </if>
+        </where>
+        ORDER BY ID DESC
+    </select>
+
+    <select id="selectAll" resultType="User">
+        SELECT * FROM auth_user
+    </select>
+
+    <!-- 自定义sql -->
+
+</mapper>

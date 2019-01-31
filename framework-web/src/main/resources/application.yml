@@ -1,0 +1,10 @@
+spring:
+  profiles:
+    active: dev
+  data:
+    redis:
+      repositories:
+        enabled: false
+server:
+  tomcat:
+    basedir: tmp

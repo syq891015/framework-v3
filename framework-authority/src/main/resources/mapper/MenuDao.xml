@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.myland.framework.authority.dao.MenuDao">
+
+    <insert id="insert" parameterType="Menu" useGeneratedKeys="true"
+            keyProperty="id">
+        INSERT INTO auth_menu
+        (
+        `P_MENU_ID`,
+        `NAME`,
+        `URL`,
+        `PERMS`,
+        `TYPE`,
+        `ICON`,
+        `ORDER_NUM`,
+        `CREATOR`
+        )
+        VALUES
+        (
+        #{pMenuId},
+        #{name},
+        #{url},
+        #{perms},
+        #{type},
+        #{icon},
+        #{orderNum},
+        #{creator}
+        )
+    </insert>
+
+    <delete id="deleteByPrimaryKey">
+        DELETE FROM auth_menu WHERE ID = #{value}
+    </delete>
+
+    <update id="updateByPrimaryKeySelective" parameterType="Menu">
+        UPDATE auth_menu
+        <set>
+            <if test="pMenuId != null">`P_MENU_ID` =
+                #{pMenuId},
+            </if>
+            <if test="name != null">`NAME` =
+                #{name},
+            </if>
+            <if test="url != null">`URL` =
+                #{url},
+            </if>
+            <if test="perms != null">`PERMS` =
+                #{perms},
+            </if>
+            <if test="type != null">`TYPE` =
+                #{type},
+            </if>
+            <if test="icon != null">`ICON` =
+                #{icon},
+            </if>
+            <if test="orderNum != null">`ORDER_NUM` =
+                #{orderNum},
+            </if>
+            <if test="creator != null">`CREATOR` =
+                #{creator},
+            </if>
+            <if test="createTime != null">`CREATE_TIME` =
+                #{createTime}
+            </if>
+        </set>
+        WHERE ID = #{id}
+    </update>
+
+    <select id="selectByPrimaryKey" resultType="Menu">
+        SELECT * FROM auth_menu WHERE ID = #{value}
+    </select>
+
+    <select id="selectList" resultType="Menu">
+        SELECT
+        auth_menu.*, p.name AS pMenuName, auth_user.name AS creatorName
+        FROM auth_menu LEFT JOIN auth_menu p ON auth_menu.p_menu_id = p.id LEFT JOIN auth_user ON auth_menu.CREATOR =
+        auth_user.id
+        <where>
+            <if test="name != null">
+                AND auth_menu.NAME LIKE CONCAT('%', #{name}, '%')
+            </if>
+            <if test="url != null">
+                AND auth_menu.URL LIKE CONCAT('%', #{url}, '%')
+            </if>
+            <if test="perms != null">
+                AND auth_menu.PERMS LIKE CONCAT('%', #{perms}, '%')
+            </if>
+            <if test="icon != null">
+                AND auth_menu.ICON LIKE CONCAT('%', #{icon}, '%')
+            </if>
+            <if test="beginCreateTime != null">
+                AND auth_menu.CREATE_TIME >= #{beginCreateTime}
+            </if>
+            <if test="endCreateTime != null">
+                AND #{endCreateTime} >= auth_menu.CREATE_TIME
+            </if>
+            <if test="pMenuName != null">
+                AND p.NAME LIKE CONCAT('%', #{pMenuName}, '%')
+            </if>
+            <if test="pMenuId == 0">
+                AND auth_menu.p_menu_id = 0
+            </if>
+        </where>
+        ORDER BY ID DESC
+    </select>
+
+    <select id="selectAll" resultType="Menu">
+        SELECT * FROM auth_menu
+    </select>
+
+    <!-- 自定义sql -->
+
+</mapper>

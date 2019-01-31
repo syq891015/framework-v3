@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.myland.framework.authority.dao.BaseDicDao">
+
+    <insert id="insert" parameterType="BaseDic" useGeneratedKeys="true"
+            keyProperty="id">
+        INSERT INTO sys_base_dic
+        (
+        `NAME`,
+        `CODE`,
+        `DESCRIPTION`,
+        `VISIBILITY`
+        )
+        VALUES
+        (
+        #{name},
+        #{code},
+        #{description},
+        #{visibility}
+        )
+    </insert>
+
+    <delete id="deleteByPrimaryKey">
+        DELETE FROM sys_base_dic WHERE ID = #{value}
+    </delete>
+
+    <update id="updateByPrimaryKeySelective" parameterType="BaseDic">
+        UPDATE sys_base_dic
+        <set>
+            <if test="name != null">`NAME` =
+                #{name},
+            </if>
+            <if test="code != null">`CODE` =
+                #{code},
+            </if>
+            <if test="description != null">`DESCRIPTION` =
+                #{description},
+            </if>
+            <if test="createTime != null">`CREATE_TIME` =
+                #{createTime},
+            </if>
+            <if test="visibility != null">`VISIBILITY` =
+                #{visibility}
+            </if>
+        </set>
+        WHERE ID = #{id}
+    </update>
+
+    <select id="selectByPrimaryKey" resultType="BaseDic">
+        SELECT * FROM sys_base_dic WHERE ID = #{value}
+    </select>
+
+    <select id="selectList" resultType="BaseDic">
+        SELECT * FROM sys_base_dic
+        <where>
+            <if test="name != null">
+                AND sys_base_dic.NAME LIKE CONCAT('%', #{name}, '%')
+            </if>
+            <if test="code != null">
+                AND sys_base_dic.CODE LIKE CONCAT('%', #{code}, '%')
+            </if>
+            <if test="description != null">
+                AND sys_base_dic.DESCRIPTION LIKE CONCAT('%', #{description}, '%')
+            </if>
+            <if test="beginCreateTime != null">
+                AND sys_base_dic.CREATE_TIME >= #{beginCreateTime}
+            </if>
+            <if test="endCreateTime != null">
+                AND #{endCreateTime} >= sys_base_dic.CREATE_TIME
+            </if>
+        </where>
+        ORDER BY ID DESC
+    </select>
+
+    <select id="selectAll" resultType="BaseDic">
+        SELECT * FROM sys_base_dic
+        <where>
+            <if test="visibility != null">
+                AND VISIBILITY = #{visibility}
+            </if>
+        </where>
+    </select>
+
+    <!-- 自定义sql -->
+
+    <select id="selectCountByCode" resultType="int">
+        SELECT
+        count(1)
+        FROM sys_base_dic
+        WHERE sys_base_dic.code = #{code}
+        <if test="id != null">
+            AND sys_base_dic.id != #{id}
+        </if>
+    </select>
+</mapper>

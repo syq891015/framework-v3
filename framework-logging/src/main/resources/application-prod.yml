@@ -1,0 +1,6 @@
+# 生产环境配置
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/
+    username: root
+    password: 123456

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.myland.framework.authority.dao.RoleDao">
+
+    <insert id="insert" parameterType="Role" useGeneratedKeys="true"
+            keyProperty="id">
+        INSERT INTO auth_role
+        (
+        `NAME`,
+        `DESCRIPTION`,
+        `CREATOR`
+        )
+        VALUES
+        (
+        #{name},
+        #{description},
+        #{creator}
+        )
+    </insert>
+
+    <delete id="deleteByPrimaryKey">
+        DELETE FROM auth_role WHERE ID = #{value}
+    </delete>
+
+    <update id="updateByPrimaryKeySelective" parameterType="Role">
+        UPDATE auth_role
+        <set>
+            <if test="name != null">`NAME` =
+                #{name},
+            </if>
+            <if test="description != null">`DESCRIPTION` =
+                #{description},
+            </if>
+            <if test="creator != null">`CREATOR` =
+                #{creator},
+            </if>
+            <if test="createTime != null">`CREATE_TIME` =
+                #{createTime}
+            </if>
+        </set>
+        WHERE ID = #{id}
+    </update>
+
+    <select id="selectByPrimaryKey" resultType="Role">
+        SELECT * FROM auth_role WHERE ID = #{value}
+    </select>
+
+    <select id="selectList" resultType="Role">
+        SELECT * FROM auth_role
+        <where>
+            <if test="name != null">
+                AND auth_role.NAME LIKE CONCAT('%', #{name}, '%')
+            </if>
+            <if test="description != null">
+                AND auth_role.DESCRIPTION LIKE CONCAT('%', #{description}, '%')
+            </if>
+            <if test="beginCreateTime != null">
+                AND auth_role.CREATE_TIME >= #{beginCreateTime}
+            </if>
+            <if test="endCreateTime != null">
+                AND #{endCreateTime} >= auth_role.CREATE_TIME
+            </if>
+        </where>
+        ORDER BY ID DESC
+    </select>
+
+    <select id="selectAll" resultType="Role">
+        SELECT * FROM auth_role
+    </select>
+
+    <!-- 自定义sql -->
+
+</mapper>
