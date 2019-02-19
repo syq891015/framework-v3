@@ -30,7 +30,7 @@ public class ReflectUtils {
 			// 获得对象类型
 			Class<?> classType = obj.getClass();
 			// 获得对象的所有属性
-			Field fields[] = classType.getDeclaredFields();
+			Field[] fields = classType.getDeclaredFields();
 			for (Field field : fields) {
 				if (field.getName().equals(fieldName)) {
 					String firstLetter = fieldName.substring(0, 1).toUpperCase();
