@@ -53,8 +53,8 @@ public class SysUserLogAnnotationParse {
 		//判断方法上是否有Privilege注解
 		if (method.isAnnotationPresent(SysUserLog.class)) {
 			//得到方法上的注解
-			SysUserLog SysUserLog = method.getAnnotation(SysUserLog.class);
-			type = SysUserLog.type().toString();
+			SysUserLog sysUserLog = method.getAnnotation(SysUserLog.class);
+			type = sysUserLog.type().toString();
 		}
 		return type;
 	}
