@@ -6,7 +6,9 @@ import java.lang.reflect.Method;
 
 /**
  * 数据权限校验注解解析器，用以获得注解中的数据权限KEY
- * Created by SunYanQing on 2017/3/22.
+ *
+ * @author SunYanQing
+ * @date 2017/3/22
  */
 public class SysUserLogAnnotationParse {
 	/**

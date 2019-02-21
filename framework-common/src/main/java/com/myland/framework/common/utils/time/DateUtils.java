@@ -1,5 +1,6 @@
 package com.myland.framework.common.utils.time;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 import java.text.DateFormat;
@@ -9,8 +10,20 @@ import java.util.*;
 
 /**
  * 日期处理工具类，主要提供日期对象相关的计算等操作
+ * @author SunYanQing
  */
+@Slf4j
 public class DateUtils {
+
+	public static final long ONE_MINUTE_SECOND = 60;
+
+	public static final long ONE_HOUR_SECOND = 60 * 60;
+
+	private static final long ONE_DAY_SECOND = 24 * 60 * 60;
+
+	private static final long ONE_MONTH_SECOND = 30 * 24 * 60 * 60;
+
+	private static final long ONE_YEAR_SECOND = 365 * 24 * 60 * 60;
 
 	/**
 	 * 对传入的日期对象，在指定的日期字段上添加或减少相应的日期数。
@@ -207,19 +220,21 @@ public class DateUtils {
 			Date date2 = new Date();
 			senconds = date2.getTime() - date1.getTime();
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("+++日期解析异常", e);
+			return "";
 		}
 		long secondes = senconds / 1000;
-		String timeString = "";
-		if (secondes < 60) {
-			timeString = "刚刚"; /* secondes + "秒前"; */
-		} else if (secondes < 3600) {
+		String timeString;
+		if (secondes < ONE_MINUTE_SECOND) {
+			/* secondes + "秒前"; */
+			timeString = "刚刚";
+		} else if (secondes < ONE_HOUR_SECOND) {
 			timeString = secondes / 60 + "分钟前";
-		} else if (secondes < 3600 * 24) {
+		} else if (secondes < ONE_DAY_SECOND) {
 			timeString = secondes / 3600 + "小时" + secondes % 3600 / 60 + "分钟前";
-		} else if (secondes < 3600 * 24 * 30) {
+		} else if (secondes < ONE_MONTH_SECOND) {
 			timeString = secondes / 3600 / 24 + "天前";
-		} else if (secondes < 3600 * 24 * 365) {
+		} else if (secondes < ONE_YEAR_SECOND) {
 			timeString = secondes / 3600 / 24 / 30 + "个月前";
 		} else {
 			timeString = secondes / 3600 / 24 / 365 + "年前";
@@ -239,7 +254,8 @@ public class DateUtils {
 		String[] lastMonths = new String[n];
 		Calendar cal = Calendar.getInstance();
 		for (int i = 0; i < n; i++) {
-			cal.set(Calendar.MONTH, cal.get(Calendar.MONTH) - 1); // 逐次往前推1个月
+			// 逐次往前推1个月
+			cal.set(Calendar.MONTH, cal.get(Calendar.MONTH) - 1);
 			lastMonths[n - 1 - i] = cal.get(Calendar.YEAR) + "-" + (cal.get(Calendar.MONTH) + 1);
 		}
 		return lastMonths;
@@ -612,14 +628,16 @@ public class DateUtils {
 	public static String getMonthLastDay() {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		Calendar cale = Calendar.getInstance();
-		cale.set(Calendar.DAY_OF_MONTH, 0); // 设置为1号,当前日期既为本月第一天
+		// 设置为1号,当前日期既为本月第一天
+		cale.set(Calendar.DAY_OF_MONTH, 0);
 		String lastDay = format.format(cale.getTime());
 		return lastDay;
 	}
 
 	public static String getFristMon() {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM");
-		Calendar cal = Calendar.getInstance(); // 获取当前日期
+		// 获取当前日期
+		Calendar cal = Calendar.getInstance();
 		int year = cal.get(Calendar.YEAR);
 		cal.set(year, 0, 1);
 		String firstDay = format.format(cal.getTime());

@@ -8,6 +8,7 @@ import java.util.Date;
 /**
  * 日期匹配工具封装类，基于common_lang3包里提供的API进行日期数据匹配封装
  * 该工具类用于将字符串形式的日期值按指定的格式匹配转换成相应的日期对象。
+ * @author SunYanQing
  */
 public class DateParseUtils {
 

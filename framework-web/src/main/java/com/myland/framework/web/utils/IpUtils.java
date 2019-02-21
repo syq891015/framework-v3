@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 @Slf4j
 public class IpUtils {
 
+	public static final String UNKNOWN = "unknown";
+
 	/**
 	 * 获取IP地址
 	 * <p>
@@ -27,19 +29,19 @@ public class IpUtils {
 
 		try {
 			ip = request.getHeader("x-forwarded-for");
-			if (StringUtils.isEmpty(ip) || "unknown".equalsIgnoreCase(ip)) {
+			if (StringUtils.isEmpty(ip) || UNKNOWN.equalsIgnoreCase(ip)) {
 				ip = request.getHeader("Proxy-Client-IP");
 			}
-			if (StringUtils.isEmpty(ip) || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+			if (StringUtils.isEmpty(ip) || ip.length() == 0 || UNKNOWN.equalsIgnoreCase(ip)) {
 				ip = request.getHeader("WL-Proxy-Client-IP");
 			}
-			if (StringUtils.isEmpty(ip) || "unknown".equalsIgnoreCase(ip)) {
+			if (StringUtils.isEmpty(ip) || UNKNOWN.equalsIgnoreCase(ip)) {
 				ip = request.getHeader("HTTP_CLIENT_IP");
 			}
-			if (StringUtils.isEmpty(ip) || "unknown".equalsIgnoreCase(ip)) {
+			if (StringUtils.isEmpty(ip) || UNKNOWN.equalsIgnoreCase(ip)) {
 				ip = request.getHeader("HTTP_X_FORWARDED_FOR");
 			}
-			if (StringUtils.isEmpty(ip) || "unknown".equalsIgnoreCase(ip)) {
+			if (StringUtils.isEmpty(ip) || UNKNOWN.equalsIgnoreCase(ip)) {
 				ip = request.getRemoteAddr();
 			}
 		} catch (Exception e) {

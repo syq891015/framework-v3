@@ -24,5 +24,10 @@ public interface BaseDicDao extends BaseDao<BaseDic> {
 	 */
 	int selectCountByCode(Map<String, Object> map);
 
+	/**
+	 * 查询全部符合条件的数据
+	 * @param paramMap 查询条件
+	 * @return 返回集合
+	 */
 	List<BaseDic> selectAll(Map<String, Object> paramMap);
 }

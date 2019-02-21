@@ -17,7 +17,9 @@ public enum LogTypeEnum {
 	 */
 	update,
 
-	other, /**
+	other,
+
+	/**
 	 * 数据库删除操作，包括逻辑删除
 	 */
 	del

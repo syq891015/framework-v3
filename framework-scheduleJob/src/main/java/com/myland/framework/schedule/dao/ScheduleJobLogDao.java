@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 /**
  * 定时任务日志
+ * @author SunYanQing
  */
 @Repository
 public interface ScheduleJobLogDao extends BaseDao<ScheduleJobLogEntity> {

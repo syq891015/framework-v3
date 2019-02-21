@@ -13,6 +13,12 @@ import java.util.Locale;
  */
 public final class DateFmtUtils {
 
+	public static final String BAR = "-";
+
+	public static final int THREE = 3;
+
+	public static final int TWO = 2;
+
 	private DateFmtUtils() {
 
 	}
@@ -379,14 +385,14 @@ public final class DateFmtUtils {
 	/**
 	 * 对日期格式进行转换 由2014-1-9转换为2014-01-09 或者是2014-1转换为2014-01
 	 *
-	 * @param date
-	 * @return
+	 * @param date 日期字符串
+	 * @return 格式化后的日期字符串
 	 */
 	public static String format(String date) {
-		if (date.indexOf("-") != -1) {
-			String[] dateArrs = date.split("-");
+		if (date.contains(BAR)) {
+			String[] dateArrs = date.split(BAR);
 			// 如果是2014-1-9形式的做如下处理
-			if (dateArrs.length == 3) {
+			if (dateArrs.length == THREE) {
 				String year = dateArrs[0];
 				String month = dateArrs[1];
 				String day = dateArrs[2];
@@ -397,7 +403,7 @@ public final class DateFmtUtils {
 					day = "0" + day;
 				}
 				return year + "-" + month + "-" + day;
-			} else if (dateArrs.length == 2) {
+			} else if (dateArrs.length == TWO) {
 				// 如果是2014-1形式的做如下处理
 				String year = dateArrs[0];
 				String month = dateArrs[1];
