@@ -44,8 +44,8 @@ public class Menu {
 	/**
 	 * 类型：0=目录 1=菜单 2=功能
 	 */
-	@NotBlank(message = "类型不能为空")
-	private String type;
+	@NotNull(message = "类型不能为空")
+	private Byte type;
 	/**
 	 * 图标
 	 */
@@ -53,7 +53,7 @@ public class Menu {
 	/**
 	 * 排序号
 	 */
-	private Integer orderNum;
+	private Byte orderNum;
 	/**
 	 * 创建人
 	 */

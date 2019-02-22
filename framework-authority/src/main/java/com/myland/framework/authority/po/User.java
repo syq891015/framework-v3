@@ -42,7 +42,7 @@ public class User {
 	/**
 	 * 性别 1男 2女
 	 */
-	private String sex;
+	private Byte sex;
 	/**
 	 * 联系电话
 	 */
@@ -50,7 +50,7 @@ public class User {
 	/**
 	 * 状态:0 锁定 1 激活
 	 */
-	private String status;
+	private Byte status;
 	/**
 	 * 创建人
 	 */
@@ -72,7 +72,17 @@ public class User {
 	/**
 	 * 删除标志，0未删除 1已删除
 	 */
-	private Integer deleted;
+	private boolean deleted;
+
+	/**
+	 * 创建人
+	 */
+	private String creatorName;
+
+	/**
+	 * 修改人
+	 */
+	private String modifierName;
 
 	public Date getCreateTime() {
 		return ObjectUtils.clone(createTime);

@@ -47,7 +47,8 @@
     </select>
 
     <select id="selectList" resultType="Role">
-        SELECT * FROM auth_role
+        SELECT auth_role.*, auth_user.name AS creatorName
+        FROM auth_role LEFT JOIN auth_user ON auth_role.CREATOR = auth_user.id
         <where>
             <if test="name != null">
                 AND auth_role.NAME LIKE CONCAT('%', #{name}, '%')

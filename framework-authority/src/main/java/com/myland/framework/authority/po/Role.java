@@ -43,6 +43,11 @@ public class Role {
 	@JSONField(format = "yyyy-MM-dd HH:mm:ss")
 	private Date createTime;
 
+	/**
+	 * 创建人
+	 */
+	private String creatorName;
+
 	public Date getCreateTime() {
 		return ObjectUtils.clone(createTime);
 	}

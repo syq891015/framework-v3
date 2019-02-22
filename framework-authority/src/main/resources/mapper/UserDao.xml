@@ -12,10 +12,8 @@
         `NAME`,
         `SEX`,
         `PHONE`,
-        `STATUS`,
         `CREATOR`,
         `MODIFIER`
-        `DELETED`,
         )
         VALUES
         (
@@ -24,15 +22,13 @@
         #{name},
         #{sex},
         #{phone},
-        #{status},
         #{creator},
         #{modifier}
-        #{deleted},
         )
     </insert>
 
     <delete id="deleteByPrimaryKey">
-        DELETE FROM auth_user WHERE ID = #{value}
+        UPDATE auth_user SET DELETED = 1 WHERE ID = #{value}
     </delete>
 
     <update id="updateByPrimaryKeySelective" parameterType="User">
@@ -77,7 +73,10 @@
     </select>
 
     <select id="selectList" resultType="User">
-        SELECT * FROM auth_user
+        SELECT auth_user.*, crt.name AS creatorName, mdf.name AS modifierName
+        FROM auth_user
+        LEFT JOIN auth_user crt ON auth_user.CREATOR = crt.id
+        LEFT JOIN auth_user mdf ON auth_user.MODIFIER = mdf.id
         <where>
             <if test="account != null">
                 AND auth_user.ACCOUNT LIKE CONCAT('%', #{account}, '%')
@@ -97,6 +96,7 @@
             <if test="endCreateTime != null">
                 AND #{endCreateTime} >= auth_user.CREATE_TIME
             </if>
+            auth_user.deleted = 0
         </where>
         ORDER BY ID DESC
     </select>
