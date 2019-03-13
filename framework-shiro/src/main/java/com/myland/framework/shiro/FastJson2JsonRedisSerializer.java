@@ -15,9 +15,12 @@ import java.nio.charset.StandardCharsets;
  */
 public class FastJson2JsonRedisSerializer<T> implements RedisSerializer<T> {
 
-	public FastJson2JsonRedisSerializer() {
+	private Class<T> clazz;
+
+	FastJson2JsonRedisSerializer(Class<T> clazz) {
 		super();
 		ParserConfig.getGlobalInstance().setAutoTypeSupport(true);
+		this.clazz = clazz;
 	}
 
 
@@ -35,6 +38,6 @@ public class FastJson2JsonRedisSerializer<T> implements RedisSerializer<T> {
 		if (bytes == null || bytes.length <= 0) {
 			return null;
 		}
-		return (T) JsonUtils.parseObject(new String(bytes, StandardCharsets.UTF_8));
+		return JsonUtils.parseObject(new String(bytes, StandardCharsets.UTF_8), clazz);
 	}
 }

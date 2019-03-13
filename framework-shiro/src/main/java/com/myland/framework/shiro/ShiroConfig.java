@@ -1,42 +1,42 @@
 package com.myland.framework.shiro;
 
 import org.apache.shiro.mgt.SecurityManager;
+import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.servlet.Cookie;
+import org.apache.shiro.web.servlet.SimpleCookie;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.crazycake.shiro.RedisCacheManager;
 import org.crazycake.shiro.RedisManager;
 import org.crazycake.shiro.RedisSessionDAO;
 import org.crazycake.shiro.serializer.RedisSerializer;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import javax.annotation.Resource;
 
 /**
  * Shiro配置
  *
  * @author SunYanQing
  */
+@Configuration
+@ConditionalOnProperty("shiro.filter.chain.definition-map")
+@PropertySource("classpath:application.yml")
+@EnableConfigurationProperties({FilterChainProperties.class})
 public class ShiroConfig {
 
-	@Value("${spring.redis.host:127.0.0.1}")
-	private String host;
+	@Resource
+	private RedisProperties redisProperties;
 
-	@Value("${spring.redis.port:6379}")
-	private int port;
-
-	@Value("${spring.redis.password:123456}")
-	private String password;
-
-	@Value("${spring.redis.database:0}")
-	private int database;
-
-	@Value("${shiro.redis.timeout:0}")
-	private int timeout;
+	@Resource
+	private FilterChainProperties filterChainProperties;
 
 	/**
 	 * ShiroFilterFactoryBean 处理拦截资源文件问题。
@@ -54,28 +54,15 @@ public class ShiroConfig {
 
 		// 必须设置 SecurityManager
 		shiroFilterFactoryBean.setSecurityManager(securityManager);
-
-		// 拦截器.
-		Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
-
-		// <!-- 过滤链定义，从上向下顺序执行，一般将 /**放在最为下边 -->:这是一个坑呢，一不小心代码就不好使了;
-		filterChainDefinitionMap.put("/", "anon");
-		filterChainDefinitionMap.put("/login/**", "anon");
-		filterChainDefinitionMap.put("/index.html", "anon");
-		filterChainDefinitionMap.put("/static/**", "anon");
-		filterChainDefinitionMap.put("/logout", "logout");
-		filterChainDefinitionMap.put("/captcha", "anon");
-		filterChainDefinitionMap.put("/**", "authc");
-
-		shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
+		shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainProperties.getDefinitionMap());
 		return shiroFilterFactoryBean;
 	}
 
 	@Bean
-	public SecurityManager securityManager() {
+	public SecurityManager securityManager(AuthorizingRealm realm) {
 		DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
 		// 设置realm
-		// securityManager.setRealm(userRealm);
+		securityManager.setRealm(realm);
 		// 自定义缓存实现 使用redis
 		securityManager.setCacheManager(cacheManager());
 		// 自定义session管理 使用redis
@@ -85,7 +72,7 @@ public class ShiroConfig {
 
 	@Bean
 	public RedisSerializer fastJson2JsonRedisSerializer() {
-		return new FastJson2JsonRedisSerializer<>();
+		return new FastJson2JsonRedisSerializer<>(Object.class);
 	}
 
 
@@ -106,10 +93,10 @@ public class ShiroConfig {
 	 */
 	private RedisManager redisManager() {
 		RedisManager redisManager = new RedisManager();
-		redisManager.setHost(host + ":" + port);
-		redisManager.setTimeout(timeout);
-		redisManager.setPassword(password);
-		redisManager.setDatabase(database);
+		redisManager.setHost(redisProperties.getHost() + ":" + redisProperties.getPort());
+		redisManager.setTimeout(new Long(redisProperties.getTimeout().toMillis()).intValue());
+		redisManager.setPassword(redisProperties.getPassword());
+		redisManager.setDatabase(redisProperties.getDatabase());
 		return redisManager;
 	}
 
@@ -122,7 +109,20 @@ public class ShiroConfig {
 		DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
 		sessionManager.setSessionDAO(redisSessionDAO());
 		sessionManager.setGlobalSessionTimeout(1800000);
+		sessionManager.setSessionIdCookie(sessionIdCookie());
+		sessionManager.setSessionIdCookieEnabled(true);
 		return sessionManager;
+	}
+
+	/**
+	 * 指定本系统sessionid, 问题: 与servlet容器名冲突, 如jetty, tomcat 等默认jsessionid,
+	 * 当跳出shiro servlet时如error-page容器会为jsessionid重新分配值导致登录会话丢失!
+	 */
+	@Bean
+	public SimpleCookie sessionIdCookie() {
+		SimpleCookie simpleCookie = new SimpleCookie();
+		simpleCookie.setName("SESSION-ID");
+		return simpleCookie;
 	}
 
 	/**

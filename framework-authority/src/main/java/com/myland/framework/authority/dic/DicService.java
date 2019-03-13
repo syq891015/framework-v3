@@ -76,4 +76,16 @@ public interface DicService extends BaseService<Dic> {
 	 * @return 字典集合
 	 */
 	List<Dic> getListByBaseDic(Long baseDicId);
+
+	/**
+	 * 获得字典名称哈希表
+	 * @return [BaseDic.code]-[Dic.value]: [Dic.name]
+	 */
+	Map<String,String> getDicNameMap();
+
+	/**
+	 * 获得字典哈希表
+	 * @return [BaseDic.code]: [List<Dic>]
+	 */
+	Map<String,List> getDicListMap();
 }

@@ -66,4 +66,11 @@ public interface ConfigService extends BaseService<Config> {
 	 * @param ids 系统配置项ID
 	 */
 	void disable(List<Long> ids);
+
+	/**
+	 * 从缓存中获得系统配置
+	 * @param key 系统配置属性
+	 * @return 系统配置
+	 */
+	Config getConfigInCache(String key);
 }

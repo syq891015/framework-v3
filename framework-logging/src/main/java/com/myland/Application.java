@@ -11,7 +11,6 @@ import org.springframework.context.annotation.ComponentScan;
  * @date 2018-06-23 12:40
  */
 @SpringBootApplication
-@ComponentScan
 @MapperScan({"com.myland.**.dao"})
 public class Application {
 	public static void main(String[] args) {

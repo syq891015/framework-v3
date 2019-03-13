@@ -8,6 +8,7 @@ import org.apache.commons.lang3.ObjectUtils;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 菜单
@@ -73,6 +74,11 @@ public class Menu {
 	 * 创建人
 	 */
 	private String creatorName;
+
+	/**
+	 * 子菜单
+	 */
+	private List<Menu> children;
 
 	public Date getCreateTime() {
 		return ObjectUtils.clone(createTime);

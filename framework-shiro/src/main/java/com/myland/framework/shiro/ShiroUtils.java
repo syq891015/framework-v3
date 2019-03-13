@@ -4,6 +4,8 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 
+import java.util.Map;
+
 /**
  * Shiro工具类
  *
@@ -17,6 +19,16 @@ public class ShiroUtils {
 	 */
 	private static Session getSession() {
 		return SecurityUtils.getSubject().getSession();
+	}
+
+	/**
+	 * 设置会话属性
+	 * @param map 属性map
+	 */
+	public static void setSession(Map<String, Object> map) {
+		for (Map.Entry<String, Object> entry : map.entrySet()) {
+			setSessionAttribute(entry.getKey(), entry.getValue());
+		}
 	}
 
 	public static Subject getSubject() {
@@ -36,7 +48,7 @@ public class ShiroUtils {
 	 * @param key 属性键
 	 * @param value 属性值
 	 */
-	private static void setSessionAttribute(Object key, Object value) {
+	public static void setSessionAttribute(Object key, Object value) {
 		getSession().setAttribute(key, value);
 	}
 

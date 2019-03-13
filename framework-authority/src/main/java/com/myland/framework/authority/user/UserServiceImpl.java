@@ -2,13 +2,17 @@ package com.myland.framework.authority.user;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.myland.framework.authority.consts.UserConstants;
 import com.myland.framework.authority.dao.UserDao;
+import com.myland.framework.authority.menu.MenuService;
+import com.myland.framework.authority.po.Menu;
 import com.myland.framework.authority.po.User;
+import com.myland.framework.common.consts.CharacterConstants;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 用户Service实现类
@@ -21,6 +25,9 @@ import java.util.Map;
 public class UserServiceImpl implements UserService {
 	@Resource
 	private UserDao userDao;
+
+	@Resource
+	private MenuService menuService;
 
 	@Override
 	public User getObjById(Long id) {
@@ -38,6 +45,37 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<User> getAll() {
 		return userDao.selectAll();
+	}
+
+	@Override
+	public Set<String> getUserPermissions(Long userId) {
+		List<String> permsList;
+
+		// 超级管理员，拥有最高权限
+		if (UserConstants.SUPER_ADMIN.compareTo(userId) == 0) {
+			List<Menu> menuList = menuService.getAll();
+			permsList = new ArrayList<>(menuList.size());
+			for (Menu menu : menuList) {
+				permsList.add(menu.getPerms());
+			}
+		} else {
+			permsList = menuService.getPermsByUserId(userId);
+		}
+
+		//用户权限列表
+		Set<String> permsSet = new HashSet<>();
+		for (String perms : permsList) {
+			if (StringUtils.isBlank(perms)) {
+				continue;
+			}
+			permsSet.addAll(Arrays.asList(perms.trim().split(CharacterConstants.COMMA_EN)));
+		}
+		return permsSet;
+	}
+
+	@Override
+	public User getByAccount(String username) {
+		return userDao.selectByAccount(username);
 	}
 
 	@Override

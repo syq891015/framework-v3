@@ -6,6 +6,7 @@ import com.myland.framework.authority.po.User;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 用户
@@ -45,4 +46,8 @@ public interface UserService extends BaseService<User> {
 	default List<User> getAll() {
 		return null;
 	}
+
+	Set<String> getUserPermissions(Long userId);
+
+	User getByAccount(String username);
 }

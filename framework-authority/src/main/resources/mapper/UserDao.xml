@@ -12,6 +12,7 @@
         `NAME`,
         `SEX`,
         `PHONE`,
+        `AVATAR`,
         `CREATOR`,
         `MODIFIER`
         )
@@ -22,6 +23,7 @@
         #{name},
         #{sex},
         #{phone},
+        #{avatar},
         #{creator},
         #{modifier}
         )
@@ -48,6 +50,9 @@
             </if>
             <if test="phone != null">`PHONE` =
                 #{phone},
+            </if>
+            <if test="avatar != null">`AVATAR` =
+                #{avatar},
             </if>
             <if test="status != null">`STATUS` =
                 #{status},
@@ -107,4 +112,8 @@
 
     <!-- 自定义sql -->
 
+    <!-- 根据账号查询用户 -->
+    <select id="selectByAccount" resultType="User">
+        SELECT * FROM auth_user WHERE account = #{account}
+    </select>
 </mapper>

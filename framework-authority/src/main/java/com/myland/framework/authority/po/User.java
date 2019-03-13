@@ -7,6 +7,7 @@ import org.apache.commons.lang3.ObjectUtils;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -17,7 +18,7 @@ import java.util.Date;
  * @date 2018-11-30 16:29:34
  */
 @Data
-public class User {
+public class User implements Serializable {
 
 	/**
 	 * 主键
@@ -47,6 +48,10 @@ public class User {
 	 * 联系电话
 	 */
 	private String phone;
+	/**
+	 * 头像
+	 */
+	private String avatar;
 	/**
 	 * 状态:0 锁定 1 激活
 	 */

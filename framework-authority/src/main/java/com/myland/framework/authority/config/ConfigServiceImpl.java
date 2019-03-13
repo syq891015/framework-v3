@@ -2,8 +2,11 @@ package com.myland.framework.authority.config;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.myland.framework.authority.consts.CacheConstants;
 import com.myland.framework.authority.dao.ConfigDao;
 import com.myland.framework.authority.po.Config;
+import com.myland.framework.datasource.config.redis.CacheInitService;
+import com.myland.framework.datasource.config.redis.RedisUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -19,7 +22,10 @@ import java.util.Map;
  * @date 2018-11-30 16:29:35
  */
 @Service("configService")
-public class ConfigServiceImpl implements ConfigService {
+public class ConfigServiceImpl implements ConfigService, CacheInitService {
+	@Resource
+	private RedisUtils redisUtils;
+
 	@Resource
 	private ConfigDao configDao;
 
@@ -63,6 +69,15 @@ public class ConfigServiceImpl implements ConfigService {
 	}
 
 	@Override
+	public Config getConfigInCache(String key) {
+		boolean exists = redisUtils.hExists(CacheConstants.KEY_SYSTEM_CONFIG, key);
+		if (exists) {
+			return redisUtils.hGet(CacheConstants.KEY_SYSTEM_CONFIG, key, Config.class);
+		}
+		return null;
+	}
+
+	@Override
 	public void save(Config config) {
             configDao.insert(config);
 	}
@@ -77,4 +92,17 @@ public class ConfigServiceImpl implements ConfigService {
             configDao.deleteByPrimaryKey(id);
 	}
 
+	/**
+	 * 将信息放入缓存中
+	 */
+	@Override
+	public void inputCache() {
+		List<Config> configList = getAll();
+		Map<String, Object> configMap = new HashMap<>(50);
+		for (Config config : configList) {
+			configMap.put(config.getKey(), config);
+		}
+
+		redisUtils.hmSet(CacheConstants.KEY_SYSTEM_CONFIG, configMap);
+	}
 }

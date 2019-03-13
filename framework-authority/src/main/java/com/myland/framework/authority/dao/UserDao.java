@@ -14,4 +14,10 @@ import org.springframework.stereotype.Repository;
 @Repository("userDao")
 public interface UserDao extends BaseDao<User> {
 
+	/**
+	 * 根据账号查询用户信息
+	 * @param username 账号名称
+	 * @return 用户信息
+	 */
+	User selectByAccount(String username);
 }

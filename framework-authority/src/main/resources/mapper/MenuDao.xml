@@ -102,7 +102,7 @@
                 AND auth_menu.p_menu_id = 0
             </if>
         </where>
-        ORDER BY ID DESC
+        ORDER BY ID DESC, order_num
     </select>
 
     <select id="selectAll" resultType="Menu">
@@ -111,4 +111,40 @@
 
     <!-- 自定义sql -->
 
+    <!-- 根据用户ID获得经授权的权限集合 -->
+    <select id="selectPermsByUserId" resultType="string">
+        SELECT
+        auth_menu.perms
+        FROM
+        auth_user_role
+        LEFT JOIN auth_role_menu ON auth_user_role.ROLE_ID = auth_role_menu.ROLE_ID
+        LEFT JOIN auth_menu ON auth_role_menu.menu_id = auth_menu.ID
+        WHERE
+        auth_user_role.user_id = #{userId}
+    </select>
+
+    <!-- 根据父菜单ID获得所有子菜单 -->
+    <select id="selectChildren" resultType="Menu">
+        SELECT * FROM auth_menu WHERE P_MENU_ID = #{value}
+    </select>
+
+    <!-- 根据父菜单ID获得所有子菜单，只包括树干，不包括叶子 -->
+    <select id="selectTrunkChildren" resultType="Menu">
+        SELECT * FROM auth_menu WHERE P_MENU_ID = #{value} AND type != 2 ORDER BY order_num
+    </select>
+
+    <!-- 根据父菜单ID获得所有子菜单，只包括树干，不包括叶子 -->
+    <select id="selectPermissionChildren" resultType="Menu">
+        SELECT
+        auth_menu.*
+        FROM
+        auth_user_role
+        LEFT JOIN auth_role_menu ON auth_user_role.ROLE_ID = auth_role_menu.ROLE_ID
+        LEFT JOIN auth_menu ON auth_role_menu.menu_id = auth_menu.ID
+        WHERE
+        auth_user_role.user_id = #{userId}
+        AND auth_menu.P_MENU_ID = #{pMenuId}
+        AND auth_menu.type != 2
+         ORDER BY auth_menu.order_num
+    </select>
 </mapper>
