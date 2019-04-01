@@ -1,8 +1,8 @@
 package com.myland.framework.authority.user;
 
 import com.github.pagehelper.PageInfo;
-import com.myland.framework.common.base.BaseService;
 import com.myland.framework.authority.po.User;
+import com.myland.framework.common.base.BaseService;
 
 import java.util.List;
 import java.util.Map;

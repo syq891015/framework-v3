@@ -8,7 +8,6 @@ import com.myland.framework.authority.dataAuth.DataAuthService;
 import com.myland.framework.authority.dic.DicService;
 import com.myland.framework.authority.menu.MenuService;
 import com.myland.framework.authority.po.Config;
-import com.myland.framework.authority.po.Dic;
 import com.myland.framework.authority.po.Menu;
 import com.myland.framework.authority.po.User;
 import com.myland.framework.authority.user.UserService;
@@ -32,7 +31,6 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @author SunYanQing

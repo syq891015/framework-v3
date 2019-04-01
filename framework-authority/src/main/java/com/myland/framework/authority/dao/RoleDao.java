@@ -1,7 +1,7 @@
 package com.myland.framework.authority.dao;
 
-import com.myland.framework.common.base.BaseDao;
 import com.myland.framework.authority.po.Role;
+import com.myland.framework.common.base.BaseDao;
 import org.springframework.stereotype.Repository;
 
 /**

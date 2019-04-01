@@ -1,11 +1,9 @@
 package com.myland.framework.authority.config;
 
 import com.github.pagehelper.PageInfo;
-import com.myland.framework.common.base.BaseService;
 import com.myland.framework.authority.po.Config;
+import com.myland.framework.common.base.BaseService;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import java.util.List;
 import java.util.Map;
 

@@ -1,13 +1,12 @@
 package com.myland.framework.authority.dic;
 
+import com.myland.framework.authority.po.Dic;
 import com.myland.framework.common.base.BaseController;
 import com.myland.framework.common.message.ResponseMsg;
 import com.myland.framework.logging.annotation.SysUserLog;
 import com.myland.framework.logging.consts.LogTypeEnum;
-import com.myland.framework.shiro.ShiroUtils;
 import com.myland.framework.web.utils.validator.group.AddGroup;
 import com.myland.framework.web.utils.validator.group.UpdateGroup;
-import com.myland.framework.authority.po.Dic;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;

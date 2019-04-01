@@ -22,7 +22,7 @@ import java.util.Map;
  * @date 2018-11-30 16:29:35
  */
 @RestController
-@RequestMapping("/sys/roles")
+@RequestMapping("/auth/roles")
 @Validated
 public class RoleController extends BaseController {
 	@Resource
@@ -32,7 +32,7 @@ public class RoleController extends BaseController {
 	 * 列表
 	 */
 	@GetMapping(params = {"pageNum", "pageSize"})
-	@RequiresPermissions("role:list")
+	@RequiresPermissions("auth:role:list")
 	public ResponseMsg list(@RequestParam Map<String, Object> params) {
 		return ResponseMsg.ok(roleService.getList4Page(params));
 	}
@@ -42,7 +42,7 @@ public class RoleController extends BaseController {
 	 * 信息
 	 */
 	@GetMapping("/{id}")
-	@RequiresPermissions("role:info")
+	@RequiresPermissions("auth:role:info")
 	public ResponseMsg info(@PathVariable("id") Long id) {
         Role role =roleService.getObjById(id);
 		return ResponseMsg.ok(role);
@@ -52,7 +52,7 @@ public class RoleController extends BaseController {
 	 * 添加
 	 */
 	@PostMapping
-	@RequiresPermissions("role:add")
+	@RequiresPermissions("auth:role:add")
 	@SysUserLog(type = LogTypeEnum.add, operation = "添加角色")
 	public ResponseMsg save(@RequestBody @Validated(AddGroup.class) Role role) {
         roleService.save(role);
@@ -63,7 +63,7 @@ public class RoleController extends BaseController {
 	 * 修改
 	 */
 	@PutMapping("/{id}")
-	@RequiresPermissions("role:update")
+	@RequiresPermissions("auth:role:update")
 	@SysUserLog(type = LogTypeEnum.update, operation = "修改角色")
 	public ResponseMsg update(@PathVariable("id") Long id, @RequestBody @Validated(UpdateGroup.class) Role role) {
         role.setId(id);
@@ -75,7 +75,7 @@ public class RoleController extends BaseController {
 	 * 删除
 	 */
 	@DeleteMapping("/{id}")
-	@RequiresPermissions("role:delete")
+	@RequiresPermissions("auth:role:delete")
 	@SysUserLog(type = LogTypeEnum.del, operation = "删除角色")
 	public ResponseMsg delete(@PathVariable("id") Long id) {
         roleService.delete(id);

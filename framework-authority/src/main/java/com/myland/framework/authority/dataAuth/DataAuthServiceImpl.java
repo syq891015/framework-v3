@@ -3,7 +3,6 @@ package com.myland.framework.authority.dataAuth;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;

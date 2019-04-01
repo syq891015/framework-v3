@@ -5,7 +5,6 @@ import com.myland.framework.common.base.BaseController;
 import com.myland.framework.common.message.ResponseMsg;
 import com.myland.framework.logging.annotation.SysUserLog;
 import com.myland.framework.logging.consts.LogTypeEnum;
-import com.myland.framework.shiro.ShiroUtils;
 import com.myland.framework.web.utils.validator.group.AddGroup;
 import com.myland.framework.web.utils.validator.group.UpdateGroup;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -23,7 +22,7 @@ import java.util.Map;
  * @date 2018-11-30 16:29:34
  */
 @RestController
-@RequestMapping("/sys/menus")
+@RequestMapping("/auth/menus")
 @Validated
 public class MenuController extends BaseController {
 	@Resource
@@ -33,7 +32,7 @@ public class MenuController extends BaseController {
 	 * 列表
 	 */
 	@GetMapping(params = {"pageNum", "pageSize"})
-	@RequiresPermissions("menu:list")
+	@RequiresPermissions("auth:menu:list")
 	public ResponseMsg list(@RequestParam Map<String, Object> params) {
 		return ResponseMsg.ok(menuService.getList4Page(params));
 	}
@@ -43,7 +42,7 @@ public class MenuController extends BaseController {
 	 * 信息
 	 */
 	@GetMapping("/{id}")
-	@RequiresPermissions("menu:info")
+	@RequiresPermissions("auth:menu:info")
 	public ResponseMsg info(@PathVariable("id") Long id) {
 		Menu menu = menuService.getObjById(id);
 		return ResponseMsg.ok(menu);
@@ -53,7 +52,7 @@ public class MenuController extends BaseController {
 	 * 添加
 	 */
 	@PostMapping
-	@RequiresPermissions("menu:add")
+	@RequiresPermissions("auth:menu:add")
 	@SysUserLog(type = LogTypeEnum.add, operation = "添加菜单")
 	public ResponseMsg save(@RequestBody @Validated(AddGroup.class) Menu menu) {
 		if (menu.getPMenuId() == null) {
@@ -67,7 +66,7 @@ public class MenuController extends BaseController {
 	 * 修改
 	 */
 	@PutMapping("/{id}")
-	@RequiresPermissions("menu:update")
+	@RequiresPermissions("auth:menu:update")
 	@SysUserLog(type = LogTypeEnum.update, operation = "修改菜单")
 	public ResponseMsg update(@PathVariable("id") Long id, @RequestBody @Validated(UpdateGroup.class) Menu menu) {
 		menu.setId(id);
@@ -79,7 +78,7 @@ public class MenuController extends BaseController {
 	 * 删除
 	 */
 	@DeleteMapping("/{id}")
-	@RequiresPermissions("menu:delete")
+	@RequiresPermissions("auth:menu:delete")
 	@SysUserLog(type = LogTypeEnum.del, operation = "删除菜单")
 	public ResponseMsg delete(@PathVariable("id") Long id) {
 		menuService.delete(id);

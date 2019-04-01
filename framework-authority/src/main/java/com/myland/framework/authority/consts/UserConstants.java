@@ -17,7 +17,7 @@ public class UserConstants {
 	/**
 	 * 超级管理员账号
 	 */
-	public static final String SUPER_ADMIN_NAME = "superadmin";
+	public static final String SUPER_ADMIN_NAME = "admin";
 
 	/**
 	 * 账户锁定

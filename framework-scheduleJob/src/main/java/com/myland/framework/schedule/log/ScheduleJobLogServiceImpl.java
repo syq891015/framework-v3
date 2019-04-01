@@ -5,10 +5,8 @@ import com.github.pagehelper.PageInfo;
 import com.myland.framework.schedule.dao.ScheduleJobLogDao;
 import com.myland.framework.schedule.po.ScheduleJobLogEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.List;
 import java.util.Map;
 
 /**
