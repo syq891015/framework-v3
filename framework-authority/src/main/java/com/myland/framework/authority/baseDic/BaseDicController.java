@@ -39,7 +39,7 @@ public class BaseDicController extends BaseController {
 	 * 列表
 	 */
 	@GetMapping(params = {"pageNum", "pageSize"})
-	@RequiresPermissions("baseDic:list")
+	@RequiresPermissions("sys:baseDic:list")
 	public ResponseMsg list(@RequestParam Map<String, Object> params) {
 		return ResponseMsg.ok(baseDicService.getList4Page(params));
 	}
@@ -49,7 +49,7 @@ public class BaseDicController extends BaseController {
 	 * 信息
 	 */
 	@GetMapping("/{id}")
-	@RequiresPermissions("baseDic:info")
+	@RequiresPermissions("sys:baseDic:info")
 	public ResponseMsg info(@PathVariable("id") Long id) {
 		BaseDic baseDic = baseDicService.getObjById(id);
 		return ResponseMsg.ok(baseDic);
@@ -59,7 +59,7 @@ public class BaseDicController extends BaseController {
 	 * 查询全部
 	 */
 	@GetMapping
-	@RequiresPermissions("baseDic:all")
+	@RequiresPermissions("sys:baseDic:all")
 	public ResponseMsg all() {
 		Map<String, Object> paramMap = new HashMap<>(1);
 		paramMap.put("visibility", 1);
@@ -70,7 +70,7 @@ public class BaseDicController extends BaseController {
 	 * 添加
 	 */
 	@PostMapping
-	@RequiresPermissions("baseDic:add")
+	@RequiresPermissions("sys:baseDic:add")
 	@SysUserLog(type = LogTypeEnum.add, operation = "添加字典大类")
 	public ResponseMsg save(@RequestBody @Validated(AddGroup.class) BaseDic baseDic) {
 		boolean can = baseDicService.checkCodeUnique(baseDic.getCode(), null);
@@ -85,7 +85,7 @@ public class BaseDicController extends BaseController {
 	 * 修改
 	 */
 	@PutMapping("/{id}")
-	@RequiresPermissions("baseDic:update")
+	@RequiresPermissions("sys:baseDic:update")
 	@SysUserLog(type = LogTypeEnum.update, operation = "修改字典大类")
 	public ResponseMsg update(@PathVariable("id") Long id, @RequestBody @Validated(UpdateGroup.class) BaseDic baseDic) {
 		boolean can = baseDicService.checkCodeUnique(baseDic.getCode(), id);
@@ -101,7 +101,7 @@ public class BaseDicController extends BaseController {
 	 * 删除
 	 */
 	@DeleteMapping("/{id}")
-	@RequiresPermissions("baseDic:delete")
+	@RequiresPermissions("sys:baseDic:delete")
 	@SysUserLog(type = LogTypeEnum.del, operation = "删除字典大类")
 	public ResponseMsg delete(@PathVariable("id") Long id) {
 		List<Dic> dicList = dicService.getListByBaseDic(id);

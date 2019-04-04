@@ -10,6 +10,7 @@ import com.myland.framework.authority.po.User;
 import com.myland.framework.common.consts.CharacterConstants;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -76,6 +77,32 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User getByAccount(String username) {
 		return userDao.selectByAccount(username);
+	}
+
+	@Override
+	public List<Long> getRoleIdListByUserId(Long userId) {
+		return userDao.selectRoleIdListByUserId(userId);
+	}
+
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public void boundRole(Long userId, List<Long> roleIds) {
+		delRoleRelationShip(userId);
+
+		Map<String, Object> paramMap = new HashMap<>(2);
+		paramMap.put("userId", userId);
+		paramMap.put("roleIdList", roleIds);
+		insertRoleRelationShip(paramMap);
+	}
+
+	@Override
+	public void delRoleRelationShip(Long userId) {
+		userDao.delRoleRelationShip(userId);
+	}
+
+	@Override
+	public void insertRoleRelationShip(Map<String, Object> paramMap) {
+		userDao.insertRoleRelationShip(paramMap);
 	}
 
 	@Override

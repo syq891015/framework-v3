@@ -1,5 +1,7 @@
 package com.myland.framework.authority.consts;
 
+import org.apache.shiro.crypto.hash.Sha256Hash;
+
 /**
  * 用户常量
  *
@@ -28,4 +30,14 @@ public class UserConstants {
 	 * 账户激活
 	 */
 	public static final String ACTIVATE_STATUS = "1";
+
+	/**
+	 * 默认密码明文
+	 */
+	public static final String DEFAULT_PASSWD = "123";
+
+	/**
+	 * 默认密码密文
+	 */
+	public static final String DEFAULT_PASSWD_ENCRYPT = new Sha256Hash(DEFAULT_PASSWD).toHex();
 }

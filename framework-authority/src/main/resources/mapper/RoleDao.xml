@@ -72,4 +72,29 @@
 
     <!-- 自定义sql -->
 
+    <!-- 根据角色ID获得该角色下的菜单ID集合 -->
+    <select id="selectMenuIdListByRoleId" resultType="long">
+        SELECT MENU_ID FROM auth_role_menu WHERE ROLE_ID = #{value}
+    </select>
+
+    <!-- 删除角色菜单关系 -->
+    <delete id="delMenuRelationShip">
+        DELETE FROM auth_role_menu WHERE role_id = #{value}
+    </delete>
+
+    <!-- 保存角色菜单关系 -->
+    <insert id="insertMenuRelationShip">
+        INSERT INTO auth_role_menu
+        (
+        `role_id`,
+        `menu_id`
+        )
+        values
+        <foreach collection="menuIdList" item="item" index="index" separator=",">
+            (
+            #{roleId},
+            #{item}
+            )
+        </foreach>
+    </insert>
 </mapper>

@@ -66,9 +66,6 @@
             <if test="modifier != null">`MODIFIER` =
                 #{modifier},
             </if>
-            <if test="deleted != null">`DELETED` =
-                #{deleted}
-            </if>
         </set>
         WHERE ID = #{id}
     </update>
@@ -116,4 +113,31 @@
     <select id="selectByAccount" resultType="User">
         SELECT * FROM auth_user WHERE account = #{account}
     </select>
+
+    <!-- 获得某个用户下的角色ID集合 -->
+    <select id="selectRoleIdListByUserId" resultType="long">
+        SELECT ROLE_ID FROM auth_user_role WHERE USER_ID = #{value}
+    </select>
+
+
+    <!-- 删除用户角色关系 -->
+    <delete id="delRoleRelationShip">
+        DELETE FROM auth_user_role WHERE user_id = #{value}
+    </delete>
+
+    <!-- 保存用户角色关系 -->
+    <insert id="insertRoleRelationShip">
+        INSERT INTO auth_user_role
+        (
+        `user_id`,
+        `role_id`
+        )
+        values
+        <foreach collection="roleIdList" item="item" index="index" separator=",">
+            (
+            #{userId},
+            #{item}
+            )
+        </foreach>
+    </insert>
 </mapper>

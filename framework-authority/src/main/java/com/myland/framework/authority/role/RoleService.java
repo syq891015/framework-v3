@@ -45,4 +45,33 @@ public interface RoleService extends BaseService<Role> {
 	default List<Role> getAll() {
 		return null;
 	}
+
+	/**
+	 * 根据角色ID获得该角色下的菜单ID集合
+	 *
+	 * @param roleId 角色ID
+	 * @return 该角色下的菜单ID集合
+	 */
+	List<Long> getMenuIdListByRoleId(Long roleId);
+
+	/**
+	 * 删除角色菜单关系
+	 *
+	 * @param roleId 角色ID
+	 */
+	void delMenuRelationShip(Long roleId);
+
+	/**
+	 * 保存角色菜单关系
+	 *
+	 * @param paramMap { roleId: 1, menuIdList: [] }
+	 */
+	void insertMenuRelationShip(Map<String, Object> paramMap);
+
+	/**
+	 * 角色绑定菜单
+	 *  @param roleId  角色ID
+	 * @param menuIds 菜单ID集合
+	 */
+	void boundMenu(Long roleId, List<Long> menuIds);
 }

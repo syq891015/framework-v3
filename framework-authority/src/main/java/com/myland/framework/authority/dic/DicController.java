@@ -34,7 +34,7 @@ public class DicController extends BaseController {
 	 * 列表
 	 */
 	@GetMapping(params = {"pageNum", "pageSize"})
-	@RequiresPermissions("dic:list")
+	@RequiresPermissions("sys:dic:list")
 	public ResponseMsg list(@RequestParam Map<String, Object> params) {
 		return ResponseMsg.ok(dicService.getList4Page(params));
 	}
@@ -44,7 +44,7 @@ public class DicController extends BaseController {
 	 * 信息
 	 */
 	@GetMapping("/{id}")
-	@RequiresPermissions("dic:info")
+	@RequiresPermissions("sys:dic:info")
 	public ResponseMsg info(@PathVariable("id") Long id) {
         Dic dic =dicService.getObjById(id);
 		return ResponseMsg.ok(dic);
@@ -54,7 +54,7 @@ public class DicController extends BaseController {
 	 * 添加
 	 */
 	@PostMapping
-	@RequiresPermissions("dic:add")
+	@RequiresPermissions("sys:dic:add")
 	@SysUserLog(type = LogTypeEnum.add, operation = "添加字典")
 	public ResponseMsg save(@RequestBody @Validated(AddGroup.class) Dic dic) {
 		boolean noConflict = dicService.checkDicVal(dic.getBaseId(), null, dic.getVal());
@@ -69,7 +69,7 @@ public class DicController extends BaseController {
 	 * 修改
 	 */
 	@PutMapping("/{id}")
-	@RequiresPermissions("dic:update")
+	@RequiresPermissions("sys:dic:update")
 	@SysUserLog(type = LogTypeEnum.update, operation = "修改字典")
 	public ResponseMsg update(@PathVariable("id") Long id, @RequestBody @Validated(UpdateGroup.class) Dic dic) {
 		boolean noConflict = dicService.checkDicVal(dic.getBaseId(), id, dic.getVal());
@@ -86,7 +86,7 @@ public class DicController extends BaseController {
 	 * 删除
 	 */
 	@DeleteMapping("/{id}")
-	@RequiresPermissions("dic:delete")
+	@RequiresPermissions("sys:dic:delete")
 	@SysUserLog(type = LogTypeEnum.del, operation = "删除字典")
 	public ResponseMsg delete(@PathVariable("id") Long id) {
         dicService.delete(id);
@@ -97,7 +97,7 @@ public class DicController extends BaseController {
 	 * 启用
 	 */
 	@PostMapping("/enable")
-	@RequiresPermissions("dic:enable")
+	@RequiresPermissions("sys:dic:enable")
 	@SysUserLog(type = LogTypeEnum.update, operation = "启用字典")
 	public ResponseMsg enable(@RequestBody @NotEmpty(message = "至少选择一项") List<Long> ids) {
 		dicService.enable(ids);
@@ -108,7 +108,7 @@ public class DicController extends BaseController {
 	 * 禁用
 	 */
 	@PostMapping("/disable")
-	@RequiresPermissions("dic:disable")
+	@RequiresPermissions("sys:dic:disable")
 	@SysUserLog(type = LogTypeEnum.update, operation = "禁用字典")
 	public ResponseMsg disable(@RequestBody @NotEmpty(message = "至少选择一项") List<Long> ids) {
 		dicService.disable(ids);

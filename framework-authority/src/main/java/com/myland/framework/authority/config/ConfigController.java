@@ -34,7 +34,7 @@ public class ConfigController extends BaseController {
 	 * 列表
 	 */
 	@GetMapping(params = {"pageNum", "pageSize"})
-	@RequiresPermissions("config:list")
+	@RequiresPermissions("sys:config:list")
 	public ResponseMsg list(@RequestParam Map<String, Object> params) {
 		return ResponseMsg.ok(configService.getList4Page(params));
 	}
@@ -44,7 +44,7 @@ public class ConfigController extends BaseController {
 	 * 信息
 	 */
 	@GetMapping("/{id}")
-	@RequiresPermissions("config:info")
+	@RequiresPermissions("sys:config:info")
 	public ResponseMsg info(@PathVariable("id") Long id) {
 		Config config = configService.getObjById(id);
 		return ResponseMsg.ok(config);
@@ -54,7 +54,7 @@ public class ConfigController extends BaseController {
 	 * 添加
 	 */
 	@PostMapping
-	@RequiresPermissions("config:add")
+	@RequiresPermissions("sys:config:add")
 	@SysUserLog(type = LogTypeEnum.add, operation = "添加系统配置项")
 	public ResponseMsg save(@RequestBody @Validated(AddGroup.class) Config config) {
 		boolean can = configService.checkKeyUnique(config.getKey());
@@ -69,7 +69,7 @@ public class ConfigController extends BaseController {
 	 * 修改
 	 */
 	@PutMapping("/{id}")
-	@RequiresPermissions("config:update")
+	@RequiresPermissions("sys:config:update")
 	@SysUserLog(type = LogTypeEnum.update, operation = "修改系统配置项")
 	public ResponseMsg update(@PathVariable("id") Long id, @RequestBody @Validated(UpdateGroup.class) Config config) {
 		config.setId(id);
@@ -82,7 +82,7 @@ public class ConfigController extends BaseController {
 	 * 删除
 	 */
 	@DeleteMapping("/{id}")
-	@RequiresPermissions("config:delete")
+	@RequiresPermissions("sys:config:delete")
 	@SysUserLog(type = LogTypeEnum.del, operation = "删除系统配置项")
 	public ResponseMsg delete(@PathVariable("id") Long id) {
 		configService.delete(id);
@@ -93,7 +93,7 @@ public class ConfigController extends BaseController {
 	 * 启用
 	 */
 	@PostMapping("/enable")
-	@RequiresPermissions("config:enable")
+	@RequiresPermissions("sys:config:enable")
 	@SysUserLog(type = LogTypeEnum.update, operation = "启用系统配置项")
 	public ResponseMsg enable(@RequestBody @NotEmpty(message = "至少选择一项") List<Long> ids) {
 		configService.enable(ids);
@@ -104,7 +104,7 @@ public class ConfigController extends BaseController {
 	 * 禁用
 	 */
 	@PostMapping("/disable")
-	@RequiresPermissions("config:disable")
+	@RequiresPermissions("sys:config:disable")
 	@SysUserLog(type = LogTypeEnum.update, operation = "禁用系统配置项")
 	public ResponseMsg disable(@RequestBody @NotEmpty(message = "至少选择一项") List<Long> ids) {
 		configService.disable(ids);

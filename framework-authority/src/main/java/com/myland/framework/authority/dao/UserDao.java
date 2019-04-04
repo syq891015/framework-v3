@@ -4,6 +4,9 @@ import com.myland.framework.authority.po.User;
 import com.myland.framework.common.base.BaseDao;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * 用户
  *
@@ -20,4 +23,26 @@ public interface UserDao extends BaseDao<User> {
 	 * @return 用户信息
 	 */
 	User selectByAccount(String username);
+
+	/**
+	 * 获得某个用户下的角色ID集合
+	 *
+	 * @param userId 用户ID
+	 * @return 角色ID集合
+	 */
+	List<Long> selectRoleIdListByUserId(Long userId);
+
+	/**
+	 * 删除用户角色关系
+	 *
+	 * @param userId 用户ID
+	 */
+	void delRoleRelationShip(Long userId);
+
+	/**
+	 * 保存用户角色关系
+	 *
+	 * @param paramMap { userId: 1, roleIdList: [] }
+	 */
+	void insertRoleRelationShip(Map<String, Object> paramMap);
 }
