@@ -59,7 +59,7 @@ public class DicController extends BaseController {
 	public ResponseMsg save(@RequestBody @Validated(AddGroup.class) Dic dic) {
 		boolean noConflict = dicService.checkDicVal(dic.getBaseId(), null, dic.getVal());
 		if (!noConflict) {
-			return ResponseMsg.error("同种字典大类下编码值存在重复!");
+			return ResponseMsg.error("同种字典目录下编码值存在重复!");
 		}
         dicService.save(dic);
 		return ResponseMsg.ok();
@@ -74,7 +74,7 @@ public class DicController extends BaseController {
 	public ResponseMsg update(@PathVariable("id") Long id, @RequestBody @Validated(UpdateGroup.class) Dic dic) {
 		boolean noConflict = dicService.checkDicVal(dic.getBaseId(), id, dic.getVal());
 		if (!noConflict) {
-			return ResponseMsg.error("同种字典大类下编码值存在重复!");
+			return ResponseMsg.error("同种字典目录下编码值存在重复!");
 		}
 
         dic.setId(id);

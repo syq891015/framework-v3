@@ -47,9 +47,9 @@ public interface DicService extends BaseService<Dic> {
 	}
 
 	/**
-	 * 检查同种字典大类下字典编码的唯一性
-	 * @param baseId 字典大类ID
-	 * @param id 字典大类ID
+	 * 检查同种字典目录下字典编码的唯一性
+	 * @param baseId 字典目录ID
+	 * @param id 字典目录ID
 	 * @param val 字典编码值
 	 * @return true字典编码有效，false字典编码无效
 	 */
@@ -68,8 +68,8 @@ public interface DicService extends BaseService<Dic> {
 	void disable(List<Long> ids);
 
 	/**
-	 * 查询字典大类下的字典集合
-	 * @param baseDicId 字典大类ID
+	 * 查询字典目录下的字典集合
+	 * @param baseDicId 字典目录ID
 	 * @return 字典集合
 	 */
 	List<Dic> getListByBaseDic(Long baseDicId);

@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 字典大类
+ * 字典目录
  *
  * @author SunYanQing
  * @version 1.0
@@ -71,7 +71,7 @@ public class BaseDicController extends BaseController {
 	 */
 	@PostMapping
 	@RequiresPermissions("sys:baseDic:add")
-	@SysUserLog(type = LogTypeEnum.add, operation = "添加字典大类")
+	@SysUserLog(type = LogTypeEnum.add, operation = "添加字典目录")
 	public ResponseMsg save(@RequestBody @Validated(AddGroup.class) BaseDic baseDic) {
 		boolean can = baseDicService.checkCodeUnique(baseDic.getCode(), null);
 		if (!can) {
@@ -86,7 +86,7 @@ public class BaseDicController extends BaseController {
 	 */
 	@PutMapping("/{id}")
 	@RequiresPermissions("sys:baseDic:update")
-	@SysUserLog(type = LogTypeEnum.update, operation = "修改字典大类")
+	@SysUserLog(type = LogTypeEnum.update, operation = "修改字典目录")
 	public ResponseMsg update(@PathVariable("id") Long id, @RequestBody @Validated(UpdateGroup.class) BaseDic baseDic) {
 		boolean can = baseDicService.checkCodeUnique(baseDic.getCode(), id);
 		if (!can) {
@@ -102,7 +102,7 @@ public class BaseDicController extends BaseController {
 	 */
 	@DeleteMapping("/{id}")
 	@RequiresPermissions("sys:baseDic:delete")
-	@SysUserLog(type = LogTypeEnum.del, operation = "删除字典大类")
+	@SysUserLog(type = LogTypeEnum.del, operation = "删除字典目录")
 	public ResponseMsg delete(@PathVariable("id") Long id) {
 		List<Dic> dicList = dicService.getListByBaseDic(id);
 		if (dicList.size() > 0) {

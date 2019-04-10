@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 字典大类
+ * 字典目录
  *
  * @author SunYanQing
  * @version 1.0
@@ -18,7 +18,7 @@ import java.util.Map;
 public interface BaseDicDao extends BaseDao<BaseDic> {
 
 	/**
-	 * 根据编码查询字典大类数量（不包括自身）
+	 * 根据编码查询字典目录数量（不包括自身）
 	 * @param map 编码、id
 	 * @return 数量
 	 */

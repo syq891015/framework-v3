@@ -1,12 +1,14 @@
 package com.myland.framework.authority.po;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.myland.framework.web.utils.validator.group.AddGroup;
 import com.myland.framework.web.utils.validator.group.UpdateGroup;
 import lombok.Data;
 import org.apache.commons.lang3.ObjectUtils;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -28,17 +30,19 @@ public class User implements Serializable {
 	/**
 	 * 账号
 	 */
-	@NotBlank(message = "账号不能为空")
+	@NotBlank(message = "账号不能为空", groups = {AddGroup.class, UpdateGroup.class})
+	@Size(max = 20, message = "超出长度限制", groups = {AddGroup.class, UpdateGroup.class})
 	private String account;
 	/**
 	 * 密码
 	 */
-	@NotBlank(message = "密码不能为空")
+	@Size(max = 64, message = "超出长度限制", groups = {AddGroup.class, UpdateGroup.class})
 	private String passwd;
 	/**
 	 * 姓名
 	 */
-	@NotBlank(message = "姓名不能为空")
+	@NotBlank(message = "姓名不能为空", groups = {AddGroup.class, UpdateGroup.class})
+	@Size(max = 64, message = "超出长度限制", groups = {AddGroup.class, UpdateGroup.class})
 	private String name;
 	/**
 	 * 性别 1男 2女
@@ -47,6 +51,7 @@ public class User implements Serializable {
 	/**
 	 * 联系电话
 	 */
+	@Size(max = 32, message = "超出长度限制", groups = {AddGroup.class, UpdateGroup.class})
 	private String phone;
 	/**
 	 * 头像

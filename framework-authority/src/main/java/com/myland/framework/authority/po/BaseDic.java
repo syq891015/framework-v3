@@ -1,16 +1,18 @@
 package com.myland.framework.authority.po;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.myland.framework.web.utils.validator.group.AddGroup;
 import com.myland.framework.web.utils.validator.group.UpdateGroup;
 import lombok.Data;
 import org.apache.commons.lang3.ObjectUtils;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 /**
- * 字典大类
+ * 字典目录
  *
  * @author SunYanQing
  * @version 1.0
@@ -20,23 +22,26 @@ import java.util.Date;
 public class BaseDic {
 
 	/**
-	 * 字典大类ID
+	 * 字典目录ID
 	 */
 	@NotNull(groups = {UpdateGroup.class})
 	private Long id;
 	/**
-	 * 字典大类名称（中文名称）
+	 * 字典目录名称（中文名称）
 	 */
-	@NotBlank(message = "字典大类名称不能为空")
+	@NotBlank(message = "字典目录名称不能为空", groups = {AddGroup.class, UpdateGroup.class})
+	@Size(max = 50, message = "超出长度限制", groups = {AddGroup.class, UpdateGroup.class})
 	private String name;
 	/**
-	 * 字典大类代码
+	 * 字典目录代码
 	 */
-	@NotBlank(message = "字典大类代码不能为空")
+	@NotBlank(message = "字典目录代码不能为空", groups = {AddGroup.class, UpdateGroup.class})
+	@Size(max = 50, message = "超出长度限制", groups = {AddGroup.class, UpdateGroup.class})
 	private String code;
 	/**
-	 * 字典大类描述
+	 * 字典目录描述
 	 */
+	@Size(max = 1000, message = "超出长度限制", groups = {AddGroup.class, UpdateGroup.class})
 	private String description;
 	/**
 	 * 创建时间

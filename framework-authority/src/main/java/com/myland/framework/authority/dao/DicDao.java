@@ -18,9 +18,9 @@ import java.util.Map;
 public interface DicDao extends BaseDao<Dic> {
 
 	/**
-	 * 同种字典大类下字典编码唯一性查询
+	 * 同种字典目录下字典编码唯一性查询
 	 * @param param id、baseId, val
-	 * @return 同种字典大类下字典编码相同的字典数量
+	 * @return 同种字典目录下字典编码相同的字典数量
 	 */
 	int selectCount4Uk(Map<String, Object> param);
 
@@ -31,8 +31,8 @@ public interface DicDao extends BaseDao<Dic> {
 	void updateEnabled(Map<String, Object> map);
 
 	/**
-	 * 查询字典大类下的字典集合
-	 * @param baseDicId 字典大类ID
+	 * 查询字典目录下的字典集合
+	 * @param baseDicId 字典目录ID
 	 * @return 字典集合
 	 */
 	List<Dic> selectListByBaseDic(Long baseDicId);

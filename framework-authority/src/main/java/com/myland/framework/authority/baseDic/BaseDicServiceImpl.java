@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 字典大类Service实现类
+ * 字典目录Service实现类
  *
  * @author SunYanQing
  * @version 1.0

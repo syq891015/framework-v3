@@ -1,10 +1,12 @@
 package com.myland.framework.authority.po;
 
+import com.myland.framework.web.utils.validator.group.AddGroup;
 import com.myland.framework.web.utils.validator.group.UpdateGroup;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * 字典
@@ -22,19 +24,21 @@ public class Dic {
 	@NotNull(groups = {UpdateGroup.class})
 	private Long id;
 	/**
-	 * 字典大类ID
+	 * 字典目录ID
 	 */
-	@NotBlank(message = "字典大类ID不能为空")
+	@NotNull(message = "字典目录ID不能为空", groups = {AddGroup.class, UpdateGroup.class})
 	private Long baseId;
 	/**
 	 * 中文名称
 	 */
-	@NotBlank(message = "中文名称不能为空")
+	@NotBlank(message = "中文名称不能为空", groups = {AddGroup.class, UpdateGroup.class})
+	@Size(max = 20, message = "超出长度限制", groups = {AddGroup.class, UpdateGroup.class})
 	private String name;
 	/**
 	 * 编码
 	 */
-	@NotBlank(message = "编码不能为空")
+	@NotBlank(message = "编码不能为空", groups = {AddGroup.class, UpdateGroup.class})
+	@Size(max = 100, message = "超出长度限制", groups = {AddGroup.class, UpdateGroup.class})
 	private String val;
 	/**
 	 * 使用标志，1使用，0禁用
@@ -42,12 +46,12 @@ public class Dic {
 	private String used;
 
 	/**
-	 * 字典大类名称
+	 * 字典目录名称
 	 */
 	private String baseName;
 
 	/**
-	 * 字典大类编码
+	 * 字典目录编码
 	 */
 	private String baseCode;
 
