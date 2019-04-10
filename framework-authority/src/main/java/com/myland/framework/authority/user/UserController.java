@@ -9,6 +9,7 @@ import com.myland.framework.logging.consts.LogTypeEnum;
 import com.myland.framework.shiro.ShiroUtils;
 import com.myland.framework.web.utils.validator.group.AddGroup;
 import com.myland.framework.web.utils.validator.group.UpdateGroup;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.springframework.validation.annotation.Validated;
@@ -116,7 +117,11 @@ public class UserController extends BaseController {
 	@RequiresPermissions("auth:user:boundRole")
 	@SysUserLog(type = LogTypeEnum.add, operation = "用户绑定角色")
 	public ResponseMsg boundRole(@PathVariable("id") Long userId, @RequestBody Map<String, List<Long>> roleIdListMap) {
-		userService.boundRole(userId, roleIdListMap.get("roleIds"));
+		List<Long> roleIds = roleIdListMap.get("roleIds");
+		if (CollectionUtils.isEmpty(roleIds)) {
+			return ResponseMsg.error("绑定角色不能为空");
+		}
+		userService.boundRole(userId, roleIds);
 		return ResponseMsg.ok();
 	}
 

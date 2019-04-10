@@ -9,11 +9,15 @@ import com.myland.framework.logging.consts.LogTypeEnum;
 import com.myland.framework.shiro.ShiroUtils;
 import com.myland.framework.web.utils.validator.group.AddGroup;
 import com.myland.framework.web.utils.validator.group.UpdateGroup;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.ListUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -117,7 +121,12 @@ public class RoleController extends BaseController {
 	@RequiresPermissions("auth:role:boundMenu")
 	@SysUserLog(type = LogTypeEnum.add, operation = "角色分配权限")
 	public ResponseMsg boundMenu(@PathVariable("id") Long roleId, @RequestBody Map<String, List<Long>> menuIdListMap) {
-		roleService.boundMenu(roleId, menuIdListMap.get("menuIds"));
+		List<Long> menuIds = menuIdListMap.get("menuIds");
+		if (CollectionUtils.isEmpty(menuIds)) {
+			return ResponseMsg.error("绑定权限不能为空");
+		}
+
+		roleService.boundMenu(roleId, new HashSet<>(menuIds));
 		return ResponseMsg.ok();
 	}
 }

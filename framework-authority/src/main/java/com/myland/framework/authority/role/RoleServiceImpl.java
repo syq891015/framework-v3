@@ -11,6 +11,7 @@ import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 角色Service实现类
@@ -59,7 +60,7 @@ public class RoleServiceImpl implements RoleService {
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public void boundMenu(Long roleId, List<Long> menuIds) {
+	public void boundMenu(Long roleId, Set<Long> menuIds) {
 		// 删除角色菜单关系记录
 		delMenuRelationShip(roleId);
 		// 插入角色菜单关系记录

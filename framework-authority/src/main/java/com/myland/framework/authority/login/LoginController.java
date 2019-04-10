@@ -31,6 +31,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author SunYanQing
@@ -129,10 +130,13 @@ public class LoginController {
 		User userDb = userService.getObjById(user.getId());
 		userDb.setPasswd(null);
 
-		// 用户权限列表
+		// 用户目录、菜单列表
 		List<Menu> menuTree = menuService.getPermissionTree(user.getId(), null);
 
-		return ResponseMsg.ok().put("userInfo", userDb).put("menuTree", menuTree);
+		// 用户权限列表
+		Set<String> perms = userService.getUserPermissions(user.getId());
+
+		return ResponseMsg.ok().put("userInfo", userDb).put("menuTree", menuTree).put("perms", perms);
 	}
 
 	/**

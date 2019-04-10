@@ -89,6 +89,11 @@ public class User implements Serializable {
 	 */
 	private String modifierName;
 
+	/**
+	 * 角色列表
+	 */
+	private String roles;
+
 	public Date getCreateTime() {
 		return ObjectUtils.clone(createTime);
 	}

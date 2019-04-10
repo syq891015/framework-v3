@@ -75,7 +75,29 @@
     </select>
 
     <select id="selectList" resultType="User">
-        SELECT auth_user.*, crt.name AS creatorName, mdf.name AS modifierName
+        SELECT
+        auth_user.ID,
+        auth_user.ACCOUNT,
+        auth_user.NAME,
+        auth_user.SEX,
+        auth_user.PHONE,
+        auth_user.AVATAR,
+        auth_user.STATUS,
+        auth_user.CREATOR,
+        auth_user.CREATE_TIME,
+        auth_user.MODIFIER,
+        auth_user.MODIFY_TIME,
+        crt.name AS creatorName,
+        mdf.name AS modifierName,
+        (
+        SELECT
+        GROUP_CONCAT(auth_role.`NAME`)
+        FROM
+        auth_user_role
+        JOIN auth_role ON auth_user_role.ROLE_ID = auth_role.ID
+        WHERE
+        auth_user_role.USER_ID = auth_user.ID
+        ) AS roles
         FROM auth_user
         LEFT JOIN auth_user crt ON auth_user.CREATOR = crt.id
         LEFT JOIN auth_user mdf ON auth_user.MODIFIER = mdf.id

@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.myland.framework.authority.po.User;
 import com.myland.framework.common.base.BaseService;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -80,4 +81,5 @@ public interface UserService extends BaseService<User> {
 	 * @param paramMap { userId: 1, roleIdList: [] }
 	 */
 	void insertRoleRelationShip(Map<String, Object> paramMap);
+
 }

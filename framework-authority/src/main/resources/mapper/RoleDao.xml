@@ -47,7 +47,19 @@
     </select>
 
     <select id="selectList" resultType="Role">
-        SELECT auth_role.*, auth_user.name AS creatorName
+        SELECT
+        auth_role.*,
+        auth_user.name AS creatorName,
+        (
+        SELECT
+        GROUP_CONCAT(au.`NAME`)
+        FROM
+        auth_user_role
+        JOIN auth_user au ON auth_user_role.USER_ID = au.ID
+        WHERE
+        auth_user_role.ROLE_ID = auth_role.ID
+        AND auth_user.DELETED = 0
+        ) AS users
         FROM auth_role LEFT JOIN auth_user ON auth_role.CREATOR = auth_user.id
         <where>
             <if test="name != null">

@@ -48,6 +48,11 @@ public class Role {
 	 */
 	private String creatorName;
 
+	/**
+	 * 用户列表
+	 */
+	private String users;
+
 	public Date getCreateTime() {
 		return ObjectUtils.clone(createTime);
 	}

@@ -6,6 +6,7 @@ import com.myland.framework.common.base.BaseService;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 角色
@@ -70,8 +71,8 @@ public interface RoleService extends BaseService<Role> {
 
 	/**
 	 * 角色绑定菜单
-	 *  @param roleId  角色ID
+	 * @param roleId  角色ID
 	 * @param menuIds 菜单ID集合
 	 */
-	void boundMenu(Long roleId, List<Long> menuIds);
+	void boundMenu(Long roleId, Set<Long> menuIds);
 }
