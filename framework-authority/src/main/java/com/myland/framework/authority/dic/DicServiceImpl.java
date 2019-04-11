@@ -11,6 +11,7 @@ import com.myland.framework.datasource.config.redis.CacheInitService;
 import com.myland.framework.datasource.config.redis.RedisUtils;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -121,9 +122,15 @@ public class DicServiceImpl implements DicService, CacheInitService {
 		return dicMap;
 	}
 
+	@Override
+	public String getName() {
+		return "字典缓存";
+	}
+
 	/**
 	 * 将信息放入缓存中
 	 */
+	@PostConstruct
 	@Override
 	public void inputCache() {
 		redisUtils.del(CacheConstants.KEY_DIC_NAME);

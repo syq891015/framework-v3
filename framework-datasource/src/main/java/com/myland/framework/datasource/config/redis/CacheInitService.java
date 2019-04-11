@@ -6,6 +6,8 @@ package com.myland.framework.datasource.config.redis;
  */
 public interface CacheInitService {
 
+	String getName();
+
 	/**
 	 * 将信息放入缓存中
 	 */

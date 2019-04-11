@@ -1,12 +1,11 @@
 package com.myland.framework.authority.menu;
 
+import com.myland.framework.authority.domain.LoginUser;
 import com.myland.framework.authority.po.Menu;
-import com.myland.framework.authority.po.User;
 import com.myland.framework.common.base.BaseController;
 import com.myland.framework.common.message.ResponseMsg;
 import com.myland.framework.logging.annotation.SysUserLog;
 import com.myland.framework.logging.consts.LogTypeEnum;
-import com.myland.framework.shiro.ShiroUtils;
 import com.myland.framework.web.utils.validator.group.AddGroup;
 import com.myland.framework.web.utils.validator.group.UpdateGroup;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -57,15 +56,11 @@ public class MenuController extends BaseController {
 	@PostMapping
 	@RequiresPermissions("auth:menu:add")
 	@SysUserLog(type = LogTypeEnum.add, operation = "添加菜单")
-	public ResponseMsg save(@RequestBody @Validated(AddGroup.class) Menu menu) {
+	public ResponseMsg save(@RequestBody @Validated(AddGroup.class) Menu menu, LoginUser loginUser) {
 		if (menu.getPMenuId() == null) {
 			menu.setPMenuId(0L);
 		}
-		User user = (User) ShiroUtils.getLoginUser();
-		if (user == null || user.getId() == null) {
-			return ResponseMsg.error(502, "登录已失效，请重新登录");
-		}
-		menu.setCreator(user.getId());
+		menu.setCreator(loginUser.getId());
 		menuService.save(menu);
 		return ResponseMsg.ok();
 	}

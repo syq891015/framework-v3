@@ -34,7 +34,7 @@ public class Menu {
 	/**
 	 * 菜单名称
 	 */
-	@NotBlank(message = "菜单名称不能为空", groups = {AddGroup.class, UpdateGroup.class})
+	@NotBlank(message = "权限名称不能为空", groups = {AddGroup.class, UpdateGroup.class})
 	@Size(max = 32, message = "超出长度限制", groups = {AddGroup.class, UpdateGroup.class})
 	private String name;
 	/**

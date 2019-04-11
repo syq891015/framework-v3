@@ -9,6 +9,7 @@ import com.myland.framework.datasource.config.redis.CacheInitService;
 import com.myland.framework.datasource.config.redis.RedisUtils;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
@@ -92,9 +93,15 @@ public class ConfigServiceImpl implements ConfigService, CacheInitService {
             configDao.deleteByPrimaryKey(id);
 	}
 
+	@Override
+	public String getName() {
+		return "配置缓存";
+	}
+
 	/**
 	 * 将信息放入缓存中
 	 */
+	@PostConstruct
 	@Override
 	public void inputCache() {
 		List<Config> configList = getAll();

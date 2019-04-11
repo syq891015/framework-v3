@@ -1,12 +1,12 @@
 package com.myland.framework.authority.user;
 
 import com.myland.framework.authority.consts.UserConstants;
+import com.myland.framework.authority.domain.LoginUser;
 import com.myland.framework.authority.po.User;
 import com.myland.framework.common.base.BaseController;
 import com.myland.framework.common.message.ResponseMsg;
 import com.myland.framework.logging.annotation.SysUserLog;
 import com.myland.framework.logging.consts.LogTypeEnum;
-import com.myland.framework.shiro.ShiroUtils;
 import com.myland.framework.web.utils.validator.group.AddGroup;
 import com.myland.framework.web.utils.validator.group.UpdateGroup;
 import org.apache.commons.collections.CollectionUtils;
@@ -59,11 +59,7 @@ public class UserController extends BaseController {
 	@PostMapping
 	@RequiresPermissions("auth:user:add")
 	@SysUserLog(type = LogTypeEnum.add, operation = "添加用户")
-	public ResponseMsg save(@RequestBody @Validated(AddGroup.class) User user) {
-		User loginUser = (User) ShiroUtils.getLoginUser();
-		if (loginUser == null || loginUser.getId() == null) {
-			return ResponseMsg.error(502, "登录已失效，请重新登录");
-		}
+	public ResponseMsg save(@RequestBody @Validated(AddGroup.class) User user, LoginUser loginUser) {
 		user.setCreator(loginUser.getId());
 		user.setPasswd(UserConstants.DEFAULT_PASSWD_ENCRYPT);
         userService.save(user);
@@ -76,11 +72,7 @@ public class UserController extends BaseController {
 	@PutMapping("/{id}")
 	@RequiresPermissions("auth:user:update")
 	@SysUserLog(type = LogTypeEnum.update, operation = "修改用户")
-	public ResponseMsg update(@PathVariable("id") Long id, @RequestBody @Validated(UpdateGroup.class) User user) {
-		User loginUser = (User) ShiroUtils.getLoginUser();
-		if (loginUser == null || loginUser.getId() == null) {
-			return ResponseMsg.error(502, "登录已失效，请重新登录");
-		}
+	public ResponseMsg update(@PathVariable("id") Long id, @RequestBody @Validated(UpdateGroup.class) User user, LoginUser loginUser) {
 		user.setId(id);
 		user.setModifier(loginUser.getId());
         userService.update(user);
@@ -143,11 +135,7 @@ public class UserController extends BaseController {
 	 * 修改个人密码
 	 */
 	@PostMapping("/updatePwd")
-	public ResponseMsg updatePwd(@RequestBody Map<String, String> paramMap) {
-		User loginUser = (User) ShiroUtils.getLoginUser();
-		if (loginUser == null || loginUser.getId() == null) {
-			return ResponseMsg.error(502, "登录已失效，请重新登录");
-		}
+	public ResponseMsg updatePwd(@RequestBody Map<String, String> paramMap, LoginUser loginUser) {
 		User loginUserDB = userService.getObjById(loginUser.getId());
 		String oldPasswd = paramMap.get("oldPasswd");
 		if (!loginUserDB.getPasswd().equals(new Sha256Hash(oldPasswd).toHex())) {

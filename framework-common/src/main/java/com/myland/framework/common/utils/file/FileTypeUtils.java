@@ -19,6 +19,7 @@ public class FileTypeUtils {
 
 	static {
 		FILE_TYPE_MAP.put(".jpg", "image");
+		FILE_TYPE_MAP.put(".svg", "image");
 		FILE_TYPE_MAP.put(".jpeg", "image");
 		FILE_TYPE_MAP.put(".png", "image");
 		FILE_TYPE_MAP.put(".gif", "image");

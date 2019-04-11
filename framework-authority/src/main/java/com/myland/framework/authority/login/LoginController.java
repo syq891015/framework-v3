@@ -8,6 +8,7 @@ import com.myland.framework.authority.dataAuth.DataAuthService;
 import com.myland.framework.authority.dic.DicService;
 import com.myland.framework.authority.menu.MenuService;
 import com.myland.framework.authority.po.Config;
+import com.myland.framework.authority.domain.LoginUser;
 import com.myland.framework.authority.po.Menu;
 import com.myland.framework.authority.po.User;
 import com.myland.framework.authority.user.UserService;
@@ -119,22 +120,16 @@ public class LoginController {
 
 	@ResponseBody
 	@GetMapping("/user")
-	public ResponseMsg user() {
-		User user = (User) ShiroUtils.getLoginUser();
-
-		if (user == null || user.getId() == null) {
-			return ResponseMsg.error(502, "登录已失效，请重新登录");
-		}
-
+	public ResponseMsg user(LoginUser loginUser) {
 		// 用户信息
-		User userDb = userService.getObjById(user.getId());
+		User userDb = userService.getObjById(loginUser.getId());
 		userDb.setPasswd(null);
 
 		// 用户目录、菜单列表
-		List<Menu> menuTree = menuService.getPermissionTree(user.getId(), null);
+		List<Menu> menuTree = menuService.getPermissionTree(userDb.getId(), null);
 
 		// 用户权限列表
-		Set<String> perms = userService.getUserPermissions(user.getId());
+		Set<String> perms = userService.getUserPermissions(userDb.getId());
 
 		return ResponseMsg.ok().put("userInfo", userDb).put("menuTree", menuTree).put("perms", perms);
 	}
@@ -154,13 +149,9 @@ public class LoginController {
 	 */
 	@ResponseBody
 	@PostMapping("unlock")
-	public ResponseMsg unlock(@RequestBody Map<String, String> paramMap) {
+	public ResponseMsg unlock(@RequestBody Map<String, String> paramMap, LoginUser loginUser) {
 		String password = paramMap.get("password");
-		User user = (User) ShiroUtils.getLoginUser();
-
-		if (user == null || user.getId() == null) {
-			return ResponseMsg.error(502, "登录已失效，请重新登录");
-		}
+		User user = userService.getObjById(loginUser.getId());
 
 		// 密码错误
 		if (!user.getPasswd().equals(new Sha256Hash(password).toHex())) {

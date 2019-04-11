@@ -1,6 +1,7 @@
 package com.myland.framework.shiro;
 
 import com.myland.framework.authority.consts.UserConstants;
+import com.myland.framework.authority.domain.LoginUser;
 import com.myland.framework.authority.po.User;
 import com.myland.framework.authority.user.UserService;
 import org.apache.shiro.authc.*;
@@ -29,7 +30,7 @@ public class UserRealm extends AuthorizingRealm {
 	 */
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-		User user = (User) principals.getPrimaryPrincipal();
+		LoginUser user = (LoginUser) principals.getPrimaryPrincipal();
 		Long userId = user.getId();
 
 		// 用户权限列表
@@ -72,6 +73,14 @@ public class UserRealm extends AuthorizingRealm {
 			throw new LockedAccountException("账号已删除");
 		}
 
-		return new SimpleAuthenticationInfo(user, password, getName());
+		LoginUser loginUser = new LoginUser();
+		loginUser.setId(user.getId());
+		loginUser.setAccount(user.getAccount());
+		loginUser.setName(user.getName());
+		loginUser.setAvatar(user.getAvatar());
+		loginUser.setPhone(user.getPhone());
+		loginUser.setSex(user.getSex());
+
+		return new SimpleAuthenticationInfo(loginUser, password, getName());
 	}
 }

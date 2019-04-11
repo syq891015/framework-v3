@@ -1,22 +1,19 @@
 package com.myland.framework.authority.role;
 
+import com.myland.framework.authority.domain.LoginUser;
 import com.myland.framework.authority.po.Role;
-import com.myland.framework.authority.po.User;
 import com.myland.framework.common.base.BaseController;
 import com.myland.framework.common.message.ResponseMsg;
 import com.myland.framework.logging.annotation.SysUserLog;
 import com.myland.framework.logging.consts.LogTypeEnum;
-import com.myland.framework.shiro.ShiroUtils;
 import com.myland.framework.web.utils.validator.group.AddGroup;
 import com.myland.framework.web.utils.validator.group.UpdateGroup;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.ListUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -70,12 +67,8 @@ public class RoleController extends BaseController {
 	@PostMapping
 	@RequiresPermissions("auth:role:add")
 	@SysUserLog(type = LogTypeEnum.add, operation = "添加角色")
-	public ResponseMsg save(@RequestBody @Validated(AddGroup.class) Role role) {
-		User user = (User) ShiroUtils.getLoginUser();
-		if (user == null || user.getId() == null) {
-			return ResponseMsg.error(502, "登录已失效，请重新登录");
-		}
-		role.setCreator(user.getId());
+	public ResponseMsg save(@RequestBody @Validated(AddGroup.class) Role role, LoginUser loginUser) {
+		role.setCreator(loginUser.getId());
         roleService.save(role);
 		return ResponseMsg.ok();
 	}

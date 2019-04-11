@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.myland.framework.authority.dao.FileDao">
+
+    <insert id="insert" parameterType="File" useGeneratedKeys="true"
+            keyProperty="id">
+		INSERT INTO sys_file
+		(
+        `file_name`,
+        `orig_file_name`,
+        `dir`,
+        `file_size`,
+        `file_type`,
+        `file_extension`,
+        `creator`,
+        `comment`
+        )
+		VALUES
+        (
+        #{fileName},
+        #{origFileName},
+        #{dir},
+        #{fileSize},
+        #{fileType},
+        #{fileExtension},
+        #{creator},
+        #{comment}
+        )
+	</insert>
+
+    <delete id="deleteByPrimaryKey">
+        UPDATE sys_file SET deleted = 1 WHERE id = #{value}
+    </delete>
+
+    <update id="updateByPrimaryKeySelective" parameterType="File">
+        UPDATE sys_file
+        <set>
+            <if test="fileName != null">`file_name` =
+                #{fileName},
+            </if>
+            <if test="origFileName != null">
+                `orig_file_name` = #{origFileName},
+            </if>
+            <if test="dir != null">`dir` =
+                #{dir},
+            </if>
+            <if test="fileSize != null">`file_size` =
+                #{fileSize},
+            </if>
+            <if test="fileType != null">`file_type` =
+                #{fileType},
+            </if>
+            <if test="fileExtension != null">`file_extension` =
+                #{fileExtension},
+            </if>
+            <if test="modifier != null">`modifier` =
+                #{modifier},
+            </if>
+            <if test="comment != null">`comment` =
+                #{comment},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <select id="selectByPrimaryKey" resultType="File">
+        SELECT * FROM sys_file WHERE id = #{value}
+    </select>
+
+    <select id="selectList" resultType="File">
+        SELECT sys_file.*, crt.name AS creatorName, mdf.name AS modifierName FROM sys_file LEFT JOIN auth_user crt ON sys_file.creator =
+        crt.id  LEFT JOIN auth_user mdf ON sys_file.modifier = mdf.id
+        <where>
+            AND sys_file.deleted = 0
+            <if test="fileName != null">
+                AND sys_file.file_name LIKE CONCAT('%', #{fileName}, '%')
+            </if>
+            <if test="origFileName != null">
+                AND sys_file.orig_file_name LIKE CONCAT('%', #{origFileName}, '%')
+            </if>
+            <if test="dir != null">
+                AND sys_file.dir LIKE CONCAT('%', #{dir}, '%')
+            </if>
+            <if test="fileType != null">
+                AND sys_file.file_type LIKE CONCAT('%', #{fileType}, '%')
+            </if>
+            <if test="fileExtension != null">
+                AND sys_file.file_extension LIKE CONCAT('%', #{fileExtension}, '%')
+            </if>
+            <if test="beginCreateTime != null">
+                AND sys_file.create_time >= #{beginCreateTime}
+            </if>
+            <if test="endCreateTime != null">
+                AND #{endCreateTime} >= sys_file.create_time
+            </if>
+            <if test="comment != null">
+                AND sys_file.comment LIKE CONCAT('%', #{comment}, '%')
+            </if>
+        </where>
+        ORDER BY sys_file.id DESC
+    </select>
+
+    <select id="selectAll" resultType="File">
+        SELECT * FROM sys_file
+    </select>
+
+    <!-- 自定义sql -->
+
+</mapper>
