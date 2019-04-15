@@ -29,6 +29,12 @@
             <groupId>${project.parent.groupId}</groupId>
             <artifactId>framework-shiro</artifactId>
             <version>${project.parent.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.commons</groupId>
+                    <artifactId>commons-pool2</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>

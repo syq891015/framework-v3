@@ -28,6 +28,9 @@ public class MethodUtils {
 
 		// 遍历参数对象放入map中转成json字符串
 		for (Object arg : args) {
+			if (arg == null) {
+				continue;
+			}
 			//获取参数类型
 			Class clazz = arg.getClass();
 			String className = clazz.getName();
