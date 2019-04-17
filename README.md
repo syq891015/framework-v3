@@ -14,3 +14,5 @@ Spring Boot 后台管理框架
 ###### 1. 需将程序启动入口类，如Application放在com.myland包下
 
 ###### 2. 引入framework-shiro需要实现用户校验领域，并@Component
+
+###### 3. mvn install 或者 mvn deploy 时应将pom中的spring-boot-devtools去掉，否则可能出现shiro注解失效的问题

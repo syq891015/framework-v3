@@ -17,3 +17,8 @@ shiro:
         /login: anon
         /captcha: anon
         /**: authc
+http:
+  session:
+    timeout: 1800000
+  cookie:
+    sessionId: 'SESSION-ID'
