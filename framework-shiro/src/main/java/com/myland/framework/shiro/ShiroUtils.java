@@ -32,7 +32,11 @@ public class ShiroUtils {
 	}
 
 	public static Subject getSubject() {
-		return SecurityUtils.getSubject();
+		try {
+			return SecurityUtils.getSubject();
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 	/**
@@ -40,6 +44,10 @@ public class ShiroUtils {
 	 * @return 登录用户
 	 */
 	public static Object getLoginUser() {
+		Subject subject = getSubject();
+		if (subject == null) {
+			return null;
+		}
 		return getSubject().getPrincipal();
 	}
 
