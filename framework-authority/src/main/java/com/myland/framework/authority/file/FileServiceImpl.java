@@ -75,6 +75,13 @@ public class FileServiceImpl implements FileService {
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public ResponseMsg uploadFiles(MultipartFile[] srcFiles, LoginUser loginUser) {
+		Config config = configService.getConfigInCache(CacheConstants.HKEY_FILE_ACCESS_URL);
+		if (config == null) {
+			log.warn("CONFIG[File-Access-Url]未配置");
+			return ResponseMsg.error("CONFIG[File-Access-Url]未配置");
+		}
+		String accessUrl = config.getValue();
+
 		ResponseMsg responseMsg = getUploadDir();
 		if (!responseMsg.isOk()) {
 			return responseMsg;
@@ -96,19 +103,30 @@ public class FileServiceImpl implements FileService {
 
 		Long loginUserId = loginUser.getId();
 
+		File[] fileAry = new File[srcFiles.length];
+		int i = 0;
 		for (MultipartFile srcFile : srcFiles) {
 			// 保存文件到磁盘
 			File file = saveFile(srcFile, uploadDir, dir2Lv);
 			// 保存文件到数据库
 			file.setCreator(loginUserId);
 			save(file);
+			file.setUrl(accessUrl + file.getDir() + "/" + file.getFileName());
+			fileAry[i++] = file;
 		}
-		return ResponseMsg.ok();
+		return ResponseMsg.ok(fileAry);
 	}
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public ResponseMsg reUploadFile(Long fileId, MultipartFile srcFile, LoginUser loginUser) {
+		Config config = configService.getConfigInCache(CacheConstants.HKEY_FILE_ACCESS_URL);
+		if (config == null) {
+			log.warn("CONFIG[File-Access-Url]未配置");
+			return ResponseMsg.error("CONFIG[File-Access-Url]未配置");
+		}
+		String accessUrl = config.getValue();
+
 		ResponseMsg responseMsg = getUploadDir();
 		if (!responseMsg.isOk()) {
 			return responseMsg;
@@ -139,7 +157,12 @@ public class FileServiceImpl implements FileService {
 		file.setComment(comment);
 		file.setId(fileDB.getId());
 		update(file);
-		return ResponseMsg.ok();
+
+		file.setUrl(accessUrl + file.getDir() + "/" + file.getFileName());
+
+		File[] fileAry = new File[1];
+		fileAry[0] = file;
+		return ResponseMsg.ok(fileAry);
 	}
 
 	/**
@@ -166,12 +189,14 @@ public class FileServiceImpl implements FileService {
 		// 系统配置的上传文件路径
 		Config uploadDirConf = configService.getConfigInCache(CacheConstants.HKEY_UPLOAD_DIR);
 		if (uploadDirConf == null) {
+			log.warn("CONFIG[Upload-Dir]未设置");
 			return ResponseMsg.error("CONFIG[Upload-Dir]未设置");
 		}
 
 		// 访问文件的根目录
 		Config accessDirConf = configService.getConfigInCache(CacheConstants.HKEY_ACCESS_DIR);
 		if (accessDirConf == null) {
+			log.warn("CONFIG[Access-Dir]未设置");
 			return ResponseMsg.error("CONFIG[Access-Dir]未设置");
 		}
 

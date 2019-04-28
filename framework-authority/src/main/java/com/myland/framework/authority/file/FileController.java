@@ -2,15 +2,13 @@ package com.myland.framework.authority.file;
 
 import com.myland.framework.authority.config.ConfigService;
 import com.myland.framework.authority.consts.CacheConstants;
+import com.myland.framework.authority.domain.LoginUser;
 import com.myland.framework.authority.po.Config;
 import com.myland.framework.authority.po.File;
-import com.myland.framework.authority.domain.LoginUser;
 import com.myland.framework.common.base.BaseController;
 import com.myland.framework.common.message.ResponseMsg;
-import com.myland.framework.datasource.config.redis.CacheInitService;
 import com.myland.framework.logging.annotation.SysUserLog;
 import com.myland.framework.logging.consts.LogTypeEnum;
-import com.myland.framework.web.utils.SpringContextUtils;
 import com.myland.framework.web.utils.validator.group.AddGroup;
 import com.myland.framework.web.utils.validator.group.UpdateGroup;
 import lombok.extern.slf4j.Slf4j;
@@ -60,7 +58,16 @@ public class FileController extends BaseController {
 	@GetMapping("/{id}")
 	@RequiresPermissions("sys:file:info")
 	public ResponseMsg info(@PathVariable("id") Long id) {
+		Config config = configService.getConfigInCache(CacheConstants.HKEY_FILE_ACCESS_URL);
+		if (config == null) {
+			log.warn("CONFIG[File-Access-Url]未配置");
+			return ResponseMsg.error("CONFIG[File-Access-Url]未配置");
+		}
         File file = fileService.getObjById(id);
+		if (file == null) {
+			return ResponseMsg.error("文件未找到");
+		}
+		file.setUrl(config.getValue() + "/" + file.getDir() + "/" + file.getFileName());
 		return ResponseMsg.ok(file);
 	}
 
@@ -130,5 +137,4 @@ public class FileController extends BaseController {
 			return ResponseMsg.error(e.getMessage());
 		}
 	}
-
 }

@@ -37,4 +37,19 @@ public class ValidatorUtils {
 			throw new ArgumentNotValidException(constraint.getMessage());
 		}
 	}
+
+	/**
+	 * 校验对象的某一个属性
+	 * @param obj 对象
+	 * @param propertyName 属性名
+	 * @param groups 校验组
+	 * @param <T> 对象的类型
+	 */
+	public static <T>  void validateProperty(T obj, String propertyName, Class... groups) {
+		Set<ConstraintViolation<Object>> constraintViolations = validator.validateProperty(obj, propertyName, groups);
+		if (!constraintViolations.isEmpty()) {
+			ConstraintViolation<Object> constraint = constraintViolations.iterator().next();
+			throw new ArgumentNotValidException(constraint.getMessage());
+		}
+	}
 }

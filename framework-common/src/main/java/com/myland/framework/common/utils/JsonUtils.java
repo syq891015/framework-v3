@@ -89,6 +89,19 @@ public class JsonUtils {
 	}
 
 	/**
+	 * 将Object对象转换为json字符串
+	 *
+	 * @param o 对象
+	 * @return json字符串
+	 */
+	public static String listToJSON(Object o) {
+		if (o == null) {
+			return StringUtils.EMPTY;
+		}
+		return JSONArray.toJSONString(o);
+	}
+
+	/**
 	 * 将T类型对象转换为json字符串
 	 *
 	 * @param t                 对象
@@ -100,5 +113,29 @@ public class JsonUtils {
 			return StringUtils.EMPTY;
 		}
 		return JSON.toJSONString(t, serializerFeature);
+	}
+
+	/**
+	 * JSONObject对象转换成JavaBean
+	 * @param jsonObject JSONObject 对象
+	 * @param clazz JavaBean类型
+	 * @param <T> JavaBean类型
+	 * @return JavaBean对象
+	 */
+	public static <T> T toBean(Object jsonObject, Class<T> clazz) {
+		assert jsonObject instanceof JSON;
+		return JSON.toJavaObject((JSON)jsonObject, clazz);
+	}
+
+	/**
+	 * JSONArray对象转成List
+	 * @param jsonArray JSONArray对象
+	 * @param clazz list元素类型
+	 * @param <T> list元素类型
+	 * @return List
+	 */
+	public static <T> List<T> toList(Object jsonArray, Class<T> clazz) {
+		assert jsonArray instanceof JSON;
+		return toJSONArray(((JSON) jsonArray).toJSONString(), clazz);
 	}
 }

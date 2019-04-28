@@ -85,6 +85,8 @@ public class File {
 	 */
 	private boolean deleted;
 
+	private String url;
+
 	public Date getCreateTime() {
 		return ObjectUtils.clone(createTime);
 	}
