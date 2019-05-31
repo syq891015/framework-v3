@@ -1,4 +1,4 @@
-package com.myland.framework.web.utils.validator;
+package com.myland.framework.common.utils.validator;
 
 /**
  * 方法参数异常

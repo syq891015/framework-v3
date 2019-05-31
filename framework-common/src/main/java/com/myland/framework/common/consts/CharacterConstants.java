@@ -15,9 +15,19 @@ public class CharacterConstants {
 	public static final String DOT_EN = ".";
 
 	/**
+	 * 。
+	 */
+	public static final String DOT_CH = "。";
+
+	/**
 	 * .
 	 */
 	public static final char DOT_CHAR_EN = '.';
+
+	/**
+	 * 。
+	 */
+	public static final char DOT_CHAR_CH = '。';
 
 	/**
 	 * ,
@@ -25,9 +35,14 @@ public class CharacterConstants {
 	public static final String COMMA_EN = ",";
 
 	/**
-	 * ,
+	 * ，
 	 */
-	public static final char COMMA_CHAR_EN = ',';
+	public static final String COMMA_CH = "，";
+
+	/**
+	 * ，
+	 */
+	public static final char COMMA_CHAR_CH = '，';
 
 	/**
 	 * ^
@@ -45,6 +60,11 @@ public class CharacterConstants {
 	public static final String PIPE = "|";
 
 	/**
+	 * 管道符|
+	 */
+	public static final String PIPE_REG_EX = CharacterConstants.BACK_SLASH + "|";
+
+	/**
 	 * 右方括号]
 	 */
 	public static final String RIGHT_SQUARE_BRACKETS = "]";
@@ -58,6 +78,11 @@ public class CharacterConstants {
 	 * 叹号!
 	 */
 	public static final String EXCLAMATION_MARK = "!";
+
+	/**
+	 * 叹号！
+	 */
+	public static final String EXCLAMATION_MARK_CH = "！";
 
 	/**
 	 * 反斜杠\

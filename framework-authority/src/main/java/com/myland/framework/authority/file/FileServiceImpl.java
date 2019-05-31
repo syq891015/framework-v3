@@ -74,7 +74,7 @@ public class FileServiceImpl implements FileService {
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public ResponseMsg uploadFiles(MultipartFile[] srcFiles, LoginUser loginUser) {
+	public ResponseMsg uploadFiles(MultipartFile[] srcFiles, String fileType, LoginUser loginUser) {
 		Config config = configService.getConfigInCache(CacheConstants.HKEY_FILE_ACCESS_URL);
 		if (config == null) {
 			log.warn("CONFIG[File-Access-Url]未配置");

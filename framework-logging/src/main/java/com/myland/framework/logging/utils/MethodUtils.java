@@ -1,6 +1,7 @@
 package com.myland.framework.logging.utils;
 
 import com.alibaba.fastjson.JSON;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -34,7 +35,7 @@ public class MethodUtils {
 			//获取参数类型
 			Class clazz = arg.getClass();
 			String className = clazz.getName();
-			if (arg instanceof ServletRequest || arg instanceof ServletResponse) {
+			if (arg instanceof ServletRequest || arg instanceof ServletResponse || arg instanceof MultipartFile) {
 				continue;
 			}
 			className = className.substring(className.lastIndexOf(".") + 1);

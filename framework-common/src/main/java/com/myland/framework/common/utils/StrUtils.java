@@ -1,5 +1,11 @@
 package com.myland.framework.common.utils;
 
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * 字符串工具
  *
@@ -24,5 +30,25 @@ public class StrUtils {
 			sb.append(c);
 		}
 		return sb.toString().toLowerCase();
+	}
+
+	public static List<String> split(String str, String sperator) {
+		assert StringUtils.isNotBlank(str);
+		assert sperator != null;
+
+		return Arrays.asList(str.split(sperator));
+	}
+
+	public static List<Long> split2Long(String str, String sperator) {
+		assert StringUtils.isNotBlank(str);
+		assert sperator != null;
+
+		List<String> list = split(str, sperator);
+
+		List<Long> longList = new ArrayList<>(list.size());
+		for (String s : list) {
+			longList.add(Long.parseLong(s));
+		}
+		return longList;
 	}
 }

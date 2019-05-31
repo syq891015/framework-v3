@@ -100,6 +100,11 @@ public class DateUtilConst {
 	public static final String FMT_24H_ISO_HHMMSS = "HHmmss";
 
 	/**
+	 * hh时mm分ss秒 >> 取年月日时分秒，24小时制表示。形如"21时57分43秒"
+	 */
+	public static final String FMT_24H_ISO_HH_MM_SS = "HH:mm:ss";
+
+	/**
 	 * HH:mm
 	 */
 	public static final String FMT_24H_ISO_HHMM = "HH:mm";

@@ -15,15 +15,15 @@ import java.util.*;
 @Slf4j
 public class DateUtils {
 
-	public static final long ONE_MINUTE_SECOND = 60;
+	public static long ONE_MINUTE_SECOND = 60;
 
-	public static final long ONE_HOUR_SECOND = 60 * 60;
+	public static long ONE_HOUR_SECOND = 60 * 60;
 
-	private static final long ONE_DAY_SECOND = 24 * 60 * 60;
+	private static long ONE_DAY_SECOND = 24 * 60 * 60;
 
-	private static final long ONE_MONTH_SECOND = 30 * 24 * 60 * 60;
+	private static long ONE_MONTH_SECOND = 30 * 24 * 60 * 60;
 
-	private static final long ONE_YEAR_SECOND = 365 * 24 * 60 * 60;
+	private static long ONE_YEAR_SECOND = 365 * 24 * 60 * 60;
 
 	/**
 	 * 对传入的日期对象，在指定的日期字段上添加或减少相应的日期数。
@@ -40,7 +40,7 @@ public class DateUtils {
 	 * @see Calendar#MINUTE
 	 * @see Calendar#SECOND
 	 */
-	public static final Date addDate(Date date, int dateField, int intervalTime) {
+	public static Date addDate(Date date, int dateField, int intervalTime) {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
 		cal.add(dateField, intervalTime);
@@ -55,7 +55,7 @@ public class DateUtils {
 	 * @return 计算后的新日期对象
 	 * @see #addDate(Date, int, int)
 	 */
-	public static final Date addYear(Date date, int intervalTime) {
+	public static Date addYear(Date date, int intervalTime) {
 		return addDate(date, Calendar.YEAR, intervalTime);
 	}
 
@@ -67,7 +67,7 @@ public class DateUtils {
 	 * @return 计算后的新日期对象
 	 * @see #addDate(Date, int, int)
 	 */
-	public static final Date addMonth(Date date, int intervalTime) {
+	public static Date addMonth(Date date, int intervalTime) {
 		return addDate(date, Calendar.MONTH, intervalTime);
 	}
 
@@ -79,7 +79,7 @@ public class DateUtils {
 	 * @return 计算后的新日期对象
 	 * @see #addDate(Date, int, int)
 	 */
-	public static final Date addDay(Date date, int intervalTime) {
+	public static Date addDay(Date date, int intervalTime) {
 		return addDate(date, Calendar.DAY_OF_MONTH, intervalTime);
 	}
 
@@ -91,7 +91,7 @@ public class DateUtils {
 	 * @return 计算后的新日期对象
 	 * @see #addDate(Date, int, int)
 	 */
-	public static final Date addHour(Date date, int intervalTime) {
+	public static Date addHour(Date date, int intervalTime) {
 		return addDate(date, Calendar.HOUR, intervalTime);
 	}
 
@@ -103,7 +103,7 @@ public class DateUtils {
 	 * @return 计算后的新日期对象
 	 * @see #addDate(Date, int, int)
 	 */
-	public static final Date addMinute(Date date, int intervalTime) {
+	public static Date addMinute(Date date, int intervalTime) {
 		return addDate(date, Calendar.MINUTE, intervalTime);
 	}
 
@@ -115,7 +115,7 @@ public class DateUtils {
 	 * @return 计算后的新日期对象
 	 * @see #addDate(Date, int, int)
 	 */
-	public static final Date addSecond(Date date, int intervalTime) {
+	public static Date addSecond(Date date, int intervalTime) {
 		return addDate(date, Calendar.SECOND, intervalTime);
 	}
 
@@ -129,7 +129,7 @@ public class DateUtils {
 	 * @return 重置后的日期
 	 * @throws IllegalArgumentException 参数initDate为空时抛出该异常
 	 */
-	public static final Date resetDate(Date initDate, int year, int month, int date) {
+	public static Date resetDate(Date initDate, int year, int month, int date) {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(initDate);
 		cal.set(year, month - 1, date);
@@ -151,7 +151,7 @@ public class DateUtils {
 	 * @see Calendar#MINUTE
 	 * @see Calendar#SECOND
 	 */
-	public static final Date resetDate(Date initDate, int dateField, int value) {
+	public static Date resetDate(Date initDate, int dateField, int value) {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(initDate);
 
@@ -164,6 +164,26 @@ public class DateUtils {
 	}
 
 	/**
+	 * 重置日期对象的年月日
+	 *
+	 * @param date 日期
+	 * @param time 时间
+	 * @return 重置后的日期
+	 */
+	public static Date resetDate(Date date, Date time) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(time);
+
+		Calendar resetCal = Calendar.getInstance();
+
+		resetCal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), calendar.get(Calendar.SECOND));
+		return resetCal.getTime();
+	}
+
+	/**
 	 * 给定两个日期参数，计算两个日期之间相隔的天数
 	 *
 	 * @param firDate 日期值
@@ -171,7 +191,7 @@ public class DateUtils {
 	 * @return 两个日期之间相差的天数
 	 * @throws IllegalArgumentException 参数firDate或secDate为空时抛出该异常
 	 */
-	public static final int daysBetween(Date firDate, Date secDate) {
+	public static int daysBetween(Date firDate, Date secDate) {
 		Date truncFirDate = org.apache.commons.lang3.time.DateUtils.truncate(firDate, Calendar.DAY_OF_MONTH);
 		Date truncSecDate = org.apache.commons.lang3.time.DateUtils.truncate(secDate, Calendar.DAY_OF_MONTH);
 
@@ -192,7 +212,7 @@ public class DateUtils {
 	/**
 	 * 判断当前日期是否在给定的日期区间
 	 */
-	public static final boolean betweenDateInterval(Date startDate, Date endDate) {
+	public static boolean betweenDateInterval(Date startDate, Date endDate) {
 		Date now = new Date();
 		Calendar calStart = Calendar.getInstance();
 		Calendar calCurrent = Calendar.getInstance();
@@ -283,11 +303,6 @@ public class DateUtils {
 	/**
 	 * 根据年月获取当月的最后一天
 	 *
-	 * @param year
-	 * @param month
-	 * @return
-	 * @author wangdaiwei
-	 * @create 2015年3月4日 上午10:19:59
 	 */
 	public static String getEndTimeByYearMonth(int year, int month) {
 		SimpleDateFormat datef = new SimpleDateFormat("yyyy-MM-dd");
@@ -298,31 +313,12 @@ public class DateUtils {
 		return endTimeStr;
 	}
 
-	/**
-	 * @param @param  date
-	 * @param @return
-	 * @return String
-	 * @throws
-	 * @Title: getUTCTime
-	 * @Description: 获取yyyy-MM-dd'T'HH:mm:ss.SSSXXX日期
-	 * @author zhangbin
-	 */
 	public static String getUTCTime(Date date) {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
 		String time = format.format(date);
 		return time;
 	}
 
-	/**
-	 * @param @param  datetime
-	 * @param @return
-	 * @param @throws ParseException
-	 * @return String
-	 * @throws
-	 * @Title: getUTCTime
-	 * @Description:
-	 * @author zhangbin
-	 */
 	public static String getUTCTime(String datetime) throws ParseException {
 		Date date = DateParseUtils.parse24HyyyyMMddHHmmss(datetime);
 
@@ -331,16 +327,6 @@ public class DateUtils {
 		return time;
 	}
 
-	/**
-	 * @param @param  time
-	 * @param @param  i
-	 * @param @return
-	 * @return Date
-	 * @throws
-	 * @Title: addOrMinusYear
-	 * @Description: 日期时间加减年 i>0 加年 i《0减年
-	 * @author zhangbin
-	 */
 	public static Date addOrMinusYear(Long time, int i) {
 		GregorianCalendar cal = new GregorianCalendar();
 		Date date = new Date(time);
@@ -349,16 +335,6 @@ public class DateUtils {
 		return cal.getTime();
 	}
 
-	/**
-	 * @param @param  time
-	 * @param @param  i
-	 * @param @return
-	 * @return Date
-	 * @throws
-	 * @Title: addOrMinusMon
-	 * @Description: 当前日期时间 i》0 加月份 i《0 减月份
-	 * @author zhangbin
-	 */
 	public static Date addOrMinusMon(Long time, int i) {
 		GregorianCalendar cal = new GregorianCalendar();
 		Date date = new Date(time);
@@ -367,16 +343,6 @@ public class DateUtils {
 		return cal.getTime();
 	}
 
-	/**
-	 * @param @param  time
-	 * @param @param  i
-	 * @param @return
-	 * @return Date
-	 * @throws
-	 * @Title: addOrMinusDate
-	 * @Description: 当前日期时间 i》0 加天 i《0 减天
-	 * @author zhangbin
-	 */
 	public static Date addOrMinusDate(Long time, int i) {
 		GregorianCalendar cal = new GregorianCalendar();
 		Date date = new Date(time);
@@ -385,16 +351,6 @@ public class DateUtils {
 		return cal.getTime();
 	}
 
-	/**
-	 * @param @param  time
-	 * @param @param  i
-	 * @param @return
-	 * @return Date
-	 * @throws
-	 * @Title: addOrMinusHour
-	 * @Description: 当前日期时间 i》0 加小时 i《0 减小时
-	 * @author zhangbin
-	 */
 	public static Date addOrMinusHour(Long time, int i) {
 		GregorianCalendar cal = new GregorianCalendar();
 		Date date = new Date(time);
@@ -403,16 +359,6 @@ public class DateUtils {
 		return cal.getTime();
 	}
 
-	/**
-	 * @param @param  time
-	 * @param @param  i
-	 * @param @return
-	 * @return Date
-	 * @throws
-	 * @Title: addOrMinusMinute
-	 * @Description: 当前日期时间 i》0 加分 i《0 减分
-	 * @author zhangbin
-	 */
 	public static Date addOrMinusMinute(Long time, int i) {
 		GregorianCalendar cal = new GregorianCalendar();
 		Date date = new Date(time);
@@ -421,15 +367,6 @@ public class DateUtils {
 		return cal.getTime();
 	}
 
-	/**
-	 * @param time
-	 * @param i
-	 * @return Date
-	 * @throws
-	 * @Title: addOrMinusSecond
-	 * @Description: 当前日期时间 i》0 加秒 i《0 减秒
-	 * @author zhangbin
-	 */
 	public static Date addOrMinusSecond(Long time, int i) {
 		GregorianCalendar cal = new GregorianCalendar();
 		Date date = new Date(time);
@@ -444,7 +381,6 @@ public class DateUtils {
 	 * @param smdate 开始时间
 	 * @param bdate  结束时间
 	 * @return 相差天数
-	 * @throws ParseException
 	 * @author hemimi
 	 * @create 2016年2月17日 下午2:38:47
 	 */
@@ -477,7 +413,7 @@ public class DateUtils {
 	 * @create 2016年2月17日 下午3:13:24
 	 */
 	public static String getNextDay(String inDate) {
-		Date d2 = null;
+		Date d2;
 		try {
 			d2 = DateParseUtils.parseISOyyyyMMdd(inDate);
 		} catch (Exception e) {
@@ -493,13 +429,9 @@ public class DateUtils {
 
 	/**
 	 * 根据输入的参数t,获取该当前时间的后t天的日期
-	 *
-	 * @param inDate
-	 * @param t
-	 * @return
 	 */
 	public static String getNextsDay(String inDate, int t) {
-		Date d2 = null;
+		Date d2;
 		try {
 			d2 = DateParseUtils.parseISOyyyyMMdd(inDate);
 		} catch (Exception e) {
@@ -515,10 +447,6 @@ public class DateUtils {
 
 	/**
 	 * 比较输入两个字符串日期的大小
-	 *
-	 * @param date1
-	 * @param date2
-	 * @return
 	 */
 	public static int compareDate(String date1, String date2) {
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -540,7 +468,6 @@ public class DateUtils {
 	/**
 	 * 判断输入的日期是否是周末
 	 *
-	 * @param inDate
 	 * @return 是双休日返回true，否则是false
 	 */
 	public static boolean isWeekEnd(String inDate) {
@@ -566,7 +493,6 @@ public class DateUtils {
 	 * @param endTime         设置结束时间
 	 * @param targetStartTime 实际开始时间
 	 * @param targetEndTime   实际结束时间
-	 * @return
 	 * @throws ParseException boolean
 	 */
 	public static boolean checkContainTime(String startTime, String endTime, String targetStartTime,
@@ -591,8 +517,6 @@ public class DateUtils {
 
 	/**
 	 * 获取时间离着现在时间多少个小时
-	 *
-	 * @param target
 	 */
 	public static int getTimeDistanceHours(String target) {
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -786,5 +710,14 @@ public class DateUtils {
 			}
 		}
 		return workTimeList;
+	}
+
+	/**
+	 * 获得过去的日期过去的秒数
+	 * @param pastDate 过去日期
+	 * @return 过去的秒数
+	 */
+	public static long getPastMillisecond(Date pastDate) {
+		return new Date().getTime() - pastDate.getTime();
 	}
 }

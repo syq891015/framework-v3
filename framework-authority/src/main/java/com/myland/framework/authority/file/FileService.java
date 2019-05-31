@@ -52,10 +52,10 @@ public interface FileService extends BaseService<File> {
 	/**
 	 * 批量上传文件
 	 * @param srcFiles 源文件列表
-	 * @param loginUser 登录用户
-	 * @return 响应消息
+	 * @param fileType
+	 *@param loginUser 登录用户  @return 响应消息
 	 */
-	ResponseMsg uploadFiles(MultipartFile[] srcFiles, LoginUser loginUser);
+	ResponseMsg uploadFiles(MultipartFile[] srcFiles, String fileType, LoginUser loginUser);
 
 	/**
 	 * 重新上传文件

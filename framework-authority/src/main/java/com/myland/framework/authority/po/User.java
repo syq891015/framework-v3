@@ -1,8 +1,8 @@
 package com.myland.framework.authority.po;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.myland.framework.web.utils.validator.group.AddGroup;
-import com.myland.framework.web.utils.validator.group.UpdateGroup;
+import com.myland.framework.common.utils.validator.group.AddGroup;
+import com.myland.framework.common.utils.validator.group.UpdateGroup;
 import lombok.Data;
 import org.apache.commons.lang3.ObjectUtils;
 

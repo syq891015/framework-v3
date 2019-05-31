@@ -60,6 +60,13 @@ public class JsonUtils {
 		return JSONArray.parseArray(text, clazz);
 	}
 
+	public static JSONArray toJSONArray(String text) {
+		if (StringUtils.isBlank(text)) {
+			return new JSONArray();
+		}
+		return JSONArray.parseArray(text);
+	}
+
 	/**
 	 * 将字符串转换为Bean
 	 *

@@ -1,7 +1,7 @@
 package com.myland.framework.web.config;
 
 import com.myland.framework.common.message.ResponseMsg;
-import com.myland.framework.web.utils.validator.ArgumentNotValidException;
+import com.myland.framework.common.utils.validator.ArgumentNotValidException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
@@ -58,7 +58,7 @@ public class ExceptionAdvice {
 			}
 			return ResponseMsg.error(tips);
 		}
-		return ResponseMsg.error("系统异常");
+		return ResponseMsg.error("系统异常：" + e.getMessage());
 	}
 
 }

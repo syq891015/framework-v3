@@ -36,6 +36,18 @@ public class DateParseUtils {
 		return parse(dateStr, DateUtilConst.FMT_ISO_YYYYMMDD);
 	}
 
+
+	/**
+	 * 字符串(HH:mm:ss)匹配成日期
+	 *
+	 * @param dateStr 日期字符串，形如"11:36:26"
+	 * @return 匹配后对应的日期对象
+	 * @throws ParseException 日期格式匹配异常
+	 */
+	public static final Date parseISOHHmmss(String dateStr) throws ParseException {
+		return parse(dateStr, DateUtilConst.FMT_24H_ISO_HH_MM_SS);
+	}
+
 	/**
 	 * 字符串(yyyyMMdd)匹配成日期
 	 *
