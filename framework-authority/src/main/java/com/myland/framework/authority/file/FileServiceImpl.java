@@ -5,9 +5,12 @@ import com.github.pagehelper.PageInfo;
 import com.myland.framework.authority.config.ConfigService;
 import com.myland.framework.authority.consts.CacheConstants;
 import com.myland.framework.authority.dao.FileDao;
+import com.myland.framework.authority.pattern.CachedPatternLayout;
+import com.myland.framework.authority.pattern.PatternLayout;
 import com.myland.framework.authority.po.Config;
 import com.myland.framework.authority.po.File;
 import com.myland.framework.authority.domain.LoginUser;
+import com.myland.framework.authority.utils.SystemConfig;
 import com.myland.framework.common.message.ResponseMsg;
 import com.myland.framework.common.utils.file.FileTypeUtils;
 import com.myland.framework.common.utils.time.DateFmtUtils;
@@ -35,9 +38,6 @@ import java.util.UUID;
 public class FileServiceImpl implements FileService {
 	@Resource
 	private FileDao fileDao;
-
-	@Resource
-	private ConfigService configService;
 
 	@Override
 	public File getObjById(Long id) {
@@ -75,11 +75,7 @@ public class FileServiceImpl implements FileService {
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public ResponseMsg uploadFiles(MultipartFile[] srcFiles, String fileType, LoginUser loginUser) {
-		Config config = configService.getConfigInCache(CacheConstants.HKEY_FILE_ACCESS_URL);
-		if (config == null) {
-			log.warn("CONFIG[File-Access-Url]未配置");
-			return ResponseMsg.error("CONFIG[File-Access-Url]未配置");
-		}
+		Config config = SystemConfig.getFileAccessUrl();
 		String accessUrl = config.getValue();
 
 		ResponseMsg responseMsg = getUploadDir();
@@ -91,7 +87,8 @@ public class FileServiceImpl implements FileService {
 		// 访问文件的根目录
 		String accessDir = (String) responseMsg.get("accessDir");
 		// 上传文件夹
-		String dir = DateFmtUtils.currentIsoYyyyMMdd();
+		Config fileTypeConfig = SystemConfig.getConfig(fileType);
+		String dir = CachedPatternLayout.format(fileTypeConfig.getValue());
 
 		// 文件夹路径
 		String dir2Lv = accessDir + java.io.File.separator + dir;
@@ -120,12 +117,7 @@ public class FileServiceImpl implements FileService {
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public ResponseMsg reUploadFile(Long fileId, MultipartFile srcFile, LoginUser loginUser) {
-		Config config = configService.getConfigInCache(CacheConstants.HKEY_FILE_ACCESS_URL);
-		if (config == null) {
-			log.warn("CONFIG[File-Access-Url]未配置");
-			return ResponseMsg.error("CONFIG[File-Access-Url]未配置");
-		}
-		String accessUrl = config.getValue();
+		String accessUrl = SystemConfig.getFileAccessUrl().getValue();
 
 		ResponseMsg responseMsg = getUploadDir();
 		if (!responseMsg.isOk()) {
@@ -186,24 +178,10 @@ public class FileServiceImpl implements FileService {
 	 * 获得上传文件的一级目录与访问根目录
 	 */
 	private ResponseMsg getUploadDir() {
-		// 系统配置的上传文件路径
-		Config uploadDirConf = configService.getConfigInCache(CacheConstants.HKEY_UPLOAD_DIR);
-		if (uploadDirConf == null) {
-			log.warn("CONFIG[Upload-Dir]未设置");
-			return ResponseMsg.error("CONFIG[Upload-Dir]未设置");
-		}
-
-		// 访问文件的根目录
-		Config accessDirConf = configService.getConfigInCache(CacheConstants.HKEY_ACCESS_DIR);
-		if (accessDirConf == null) {
-			log.warn("CONFIG[Access-Dir]未设置");
-			return ResponseMsg.error("CONFIG[Access-Dir]未设置");
-		}
-
 		// 上传文件路径
-		String uploadDir = uploadDirConf.getValue();
+		String uploadDir = SystemConfig.getUploadDir().getValue();
 		// 访问文件的根目录
-		String accessDir = accessDirConf.getValue();
+		String accessDir = SystemConfig.getAccessDir().getValue();
 		return ResponseMsg.ok().put("uploadDir", uploadDir).put("accessDir", accessDir);
 	}
 

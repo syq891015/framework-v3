@@ -12,6 +12,7 @@ import com.myland.framework.authority.domain.LoginUser;
 import com.myland.framework.authority.po.Menu;
 import com.myland.framework.authority.po.User;
 import com.myland.framework.authority.user.UserService;
+import com.myland.framework.authority.utils.SystemConfig;
 import com.myland.framework.common.message.ResponseMsg;
 import com.myland.framework.shiro.ShiroUtils;
 import org.apache.commons.lang3.BooleanUtils;
@@ -94,9 +95,7 @@ public class LoginController {
 		String username = paramMap.get("username");
 		String password = paramMap.get("password");
 
-		Config config = configService.getConfigInCache(CacheConstants.HKEY_CAPTCHA_ENABLED);
-
-		String captchaEnabledStr = config == null ? "true" : config.getValue();
+		String captchaEnabledStr = SystemConfig.getCaptchaEnabled().getValue();
 		boolean captchaEnabled = BooleanUtils.toBoolean(captchaEnabledStr);
 		if (captchaEnabled) {
 			String captcha = paramMap.get("captcha");

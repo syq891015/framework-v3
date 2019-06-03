@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.myland.framework.authority.consts.CacheConstants;
 import com.myland.framework.authority.dao.ConfigDao;
 import com.myland.framework.authority.po.Config;
+import com.myland.framework.authority.utils.SystemConfig;
 import com.myland.framework.datasource.config.redis.CacheInitService;
 import com.myland.framework.datasource.config.redis.RedisUtils;
 import org.springframework.stereotype.Service;
@@ -111,5 +112,10 @@ public class ConfigServiceImpl implements ConfigService, CacheInitService {
 		}
 
 		redisUtils.hmSet(CacheConstants.KEY_SYSTEM_CONFIG, configMap);
+	}
+
+	@PostConstruct
+	public void systemConfig() {
+		SystemConfig.configService = this;
 	}
 }

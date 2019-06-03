@@ -11,7 +11,7 @@ import java.util.Map;
  */
 public class CachedBeanCopier {
   
-    private static final Map<String, BeanCopier> BEAN_COPIERS = new HashMap<String, BeanCopier>();
+    private static final Map<String, BeanCopier> BEAN_COPIERS = new HashMap<>();
   
     public static void copy(Object srcObj, Object destObj) {
 		String key = genKey(srcObj.getClass(), destObj.getClass());

@@ -5,6 +5,7 @@ import com.myland.framework.authority.consts.CacheConstants;
 import com.myland.framework.authority.domain.LoginUser;
 import com.myland.framework.authority.po.Config;
 import com.myland.framework.authority.po.File;
+import com.myland.framework.authority.utils.SystemConfig;
 import com.myland.framework.common.base.BaseController;
 import com.myland.framework.common.message.ResponseMsg;
 import com.myland.framework.logging.annotation.SysUserLog;
@@ -44,11 +45,7 @@ public class FileController extends BaseController {
 	@GetMapping(params = {"pageNum", "pageSize"})
 	@RequiresPermissions("sys:file:list")
 	public ResponseMsg list(@RequestParam Map<String, Object> params) {
-		Config config = configService.getConfigInCache(CacheConstants.HKEY_FILE_ACCESS_URL);
-		if (config == null) {
-			log.warn("CONFIG[File-Access-Url]未配置");
-		}
-		return ResponseMsg.ok(fileService.getList4Page(params)).put("fileAccessUrl", config != null ? config.getValue() : "");
+		return ResponseMsg.ok(fileService.getList4Page(params)).put("fileAccessUrl", SystemConfig.getFileAccessUrl().getValue());
 	}
 
 
@@ -58,16 +55,11 @@ public class FileController extends BaseController {
 	@GetMapping("/{id}")
 	@RequiresPermissions("sys:file:info")
 	public ResponseMsg info(@PathVariable("id") Long id) {
-		Config config = configService.getConfigInCache(CacheConstants.HKEY_FILE_ACCESS_URL);
-		if (config == null) {
-			log.warn("CONFIG[File-Access-Url]未配置");
-			return ResponseMsg.error("CONFIG[File-Access-Url]未配置");
-		}
         File file = fileService.getObjById(id);
 		if (file == null) {
 			return ResponseMsg.error("文件未找到");
 		}
-		file.setUrl(config.getValue() + "/" + file.getDir() + "/" + file.getFileName());
+		file.setUrl(SystemConfig.getFileAccessUrl().getValue() + "/" + file.getDir() + "/" + file.getFileName());
 		return ResponseMsg.ok(file);
 	}
 
