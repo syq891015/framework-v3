@@ -58,5 +58,10 @@
             <artifactId>spring-boot-devtools</artifactId>
             <optional>true</optional>
         </dependency>
+        <dependency>
+            <groupId>${parent.groupId}</groupId>
+            <artifactId>framework-test</artifactId>
+            <version>${parent.version}</version>
+        </dependency>
     </dependencies>
 </project>

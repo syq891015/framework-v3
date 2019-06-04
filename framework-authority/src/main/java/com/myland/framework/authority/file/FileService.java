@@ -52,8 +52,9 @@ public interface FileService extends BaseService<File> {
 	/**
 	 * 批量上传文件
 	 * @param srcFiles 源文件列表
-	 * @param fileType
-	 *@param loginUser 登录用户  @return 响应消息
+	 * @param fileType 文件类型
+	 * @param loginUser 登录用户
+	 * @return 响应消息
 	 */
 	ResponseMsg uploadFiles(MultipartFile[] srcFiles, String fileType, LoginUser loginUser);
 
@@ -65,4 +66,13 @@ public interface FileService extends BaseService<File> {
 	 * @return 响应消息
 	 */
 	ResponseMsg reUploadFile(Long fileId, MultipartFile srcFile, LoginUser loginUser);
+
+	/**
+	 * 上传文件
+	 * @param data 源文件base64
+	 * @param fileType 文件类型
+	 * @param loginUser 登录用户
+	 * @return 响应消息
+	 */
+	ResponseMsg uploadFile(String data, String fileType, LoginUser loginUser);
 }

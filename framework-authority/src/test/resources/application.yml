@@ -1,0 +1,24 @@
+spring:
+  profiles:
+    active: dev
+  data:
+    redis:
+      repositories:
+        enabled: false
+
+# 过滤链定义，从上向下顺序执行，一般将 /**放在最为下边 -->:这是一个坑呢，一不小心代码就不好使了
+#shiro:
+#  filter:
+#    chain:
+#      definition-map:
+#        /: anon
+#        /login.html: anon
+#        /static/**: anon
+#        /login: anon
+#        /captcha: anon
+#        /**: authc
+http:
+  session:
+    timeout: 1800000
+  cookie:
+    sessionId: 'SESSION-ID'

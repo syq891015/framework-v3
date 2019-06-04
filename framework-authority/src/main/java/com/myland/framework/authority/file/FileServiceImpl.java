@@ -2,18 +2,14 @@ package com.myland.framework.authority.file;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.myland.framework.authority.config.ConfigService;
-import com.myland.framework.authority.consts.CacheConstants;
 import com.myland.framework.authority.dao.FileDao;
+import com.myland.framework.authority.domain.LoginUser;
 import com.myland.framework.authority.pattern.CachedPatternLayout;
-import com.myland.framework.authority.pattern.PatternLayout;
 import com.myland.framework.authority.po.Config;
 import com.myland.framework.authority.po.File;
-import com.myland.framework.authority.domain.LoginUser;
 import com.myland.framework.authority.utils.SystemConfig;
 import com.myland.framework.common.message.ResponseMsg;
 import com.myland.framework.common.utils.file.FileTypeUtils;
-import com.myland.framework.common.utils.time.DateFmtUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Service;
@@ -22,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -36,6 +33,16 @@ import java.util.UUID;
 @Slf4j
 @Service("fileService")
 public class FileServiceImpl implements FileService {
+
+	/**
+	 * 上传文件的文件类型是jpg的
+	 */
+	private static Map<String, String> fileTypeMap = new HashMap<>(2);
+
+	static {
+		fileTypeMap.put("Exam-Photo", ".jpg");
+	}
+
 	@Resource
 	private FileDao fileDao;
 
@@ -75,17 +82,12 @@ public class FileServiceImpl implements FileService {
 	@Override
 	@Transactional(rollbackFor = Exception.class)
 	public ResponseMsg uploadFiles(MultipartFile[] srcFiles, String fileType, LoginUser loginUser) {
-		Config config = SystemConfig.getFileAccessUrl();
-		String accessUrl = config.getValue();
-
-		ResponseMsg responseMsg = getUploadDir();
-		if (!responseMsg.isOk()) {
-			return responseMsg;
-		}
+		// 访问地址
+		String accessUrl = SystemConfig.getFileAccessUrl().getValue();
 		// 上传文件路径
-		String uploadDir = (String) responseMsg.get("uploadDir");
+		String uploadDir = SystemConfig.getUploadDir().getValue();
 		// 访问文件的根目录
-		String accessDir = (String) responseMsg.get("accessDir");
+		String accessDir = SystemConfig.getAccessDir().getValue();
 		// 上传文件夹
 		Config fileTypeConfig = SystemConfig.getConfig(fileType);
 		String dir = CachedPatternLayout.format(fileTypeConfig.getValue());
@@ -93,7 +95,7 @@ public class FileServiceImpl implements FileService {
 		// 文件夹路径
 		String dir2Lv = accessDir + java.io.File.separator + dir;
 		String dirPath = uploadDir + java.io.File.separator + dir2Lv;
-		responseMsg = createDir(dirPath);
+		ResponseMsg responseMsg = createDir(dirPath);
 		if (!responseMsg.isOk()) {
 			return responseMsg;
 		}
@@ -105,6 +107,7 @@ public class FileServiceImpl implements FileService {
 		for (MultipartFile srcFile : srcFiles) {
 			// 保存文件到磁盘
 			File file = saveFile(srcFile, uploadDir, dir2Lv);
+			file.setComment(fileType);
 			// 保存文件到数据库
 			file.setCreator(loginUserId);
 			save(file);
@@ -119,19 +122,15 @@ public class FileServiceImpl implements FileService {
 	public ResponseMsg reUploadFile(Long fileId, MultipartFile srcFile, LoginUser loginUser) {
 		String accessUrl = SystemConfig.getFileAccessUrl().getValue();
 
-		ResponseMsg responseMsg = getUploadDir();
-		if (!responseMsg.isOk()) {
-			return responseMsg;
-		}
 		// 上传文件路径
-		String uploadDir = (String) responseMsg.get("uploadDir");
+		String uploadDir = SystemConfig.getUploadDir().getValue();
 
 		File fileDB = getObjById(fileId);
 		String dir = fileDB.getDir();
 
 		// 文件夹路径
 		String dirPath = uploadDir + java.io.File.separator + dir;
-		responseMsg = createDir(dirPath);
+		ResponseMsg responseMsg = createDir(dirPath);
 		if (!responseMsg.isOk()) {
 			return responseMsg;
 		}
@@ -157,6 +156,51 @@ public class FileServiceImpl implements FileService {
 		return ResponseMsg.ok(fileAry);
 	}
 
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public ResponseMsg uploadFile(String data, String fileType, LoginUser loginUser) {
+		// 上传文件路径
+		String uploadDir = SystemConfig.getUploadDir().getValue();
+		// 访问文件的根目录
+		String accessDir = SystemConfig.getAccessDir().getValue();
+		// 上传文件夹
+		Config fileTypeConfig = SystemConfig.getConfig(fileType);
+		String dir = CachedPatternLayout.format(fileTypeConfig.getValue());
+
+		// 文件夹路径
+		String dir2Lv = accessDir + java.io.File.separator + dir;
+		String dirPath = uploadDir + java.io.File.separator + dir2Lv;
+		ResponseMsg responseMsg = createDir(dirPath);
+		if (!responseMsg.isOk()) {
+			return responseMsg;
+		}
+
+		Long loginUserId = loginUser.getId();
+
+		// 扩展名
+		String extension = fileTypeMap.get(fileType);
+
+		// 新文件名
+		String fileName = UUID.randomUUID().toString() + extension;
+
+		com.myland.framework.common.utils.file.FileUtils.writeNewFile(dirPath, fileName, data);
+
+		// 组装文件
+		File file = new File();
+		file.setFileExtension(extension);
+		file.setFileName(fileName);
+		file.setDir(dir2Lv);
+		file.setFileType(FileTypeUtils.getFileType(extension));
+		file.setComment(fileType);
+		file.setCreator(loginUserId);
+		save(file);
+
+		File[] fileAry = new File[1];
+		file.setUrl(SystemConfig.getFileAccessUrl().getValue() + file.getDir() + "/" + file.getFileName());
+		fileAry[0] = file;
+		return ResponseMsg.ok(fileAry);
+	}
+
 	/**
 	 * 创建目录
 	 * @param dirPath 目录路径
@@ -172,17 +216,6 @@ public class FileServiceImpl implements FileService {
 			}
 		}
 		return ResponseMsg.ok();
-	}
-
-	/**
-	 * 获得上传文件的一级目录与访问根目录
-	 */
-	private ResponseMsg getUploadDir() {
-		// 上传文件路径
-		String uploadDir = SystemConfig.getUploadDir().getValue();
-		// 访问文件的根目录
-		String accessDir = SystemConfig.getAccessDir().getValue();
-		return ResponseMsg.ok().put("uploadDir", uploadDir).put("accessDir", accessDir);
 	}
 
 	/**

@@ -30,7 +30,7 @@ public class ResponseMsg extends HashMap<String, Object> {
 	 */
 	private static final String R_MSG_SUCCESS = "SUCCESS";
 
-	private ResponseMsg() {
+	public ResponseMsg() {
 		put(R_KEY_CODE, 0).put(R_KEY_MSG, R_MSG_SUCCESS);
 	}
 

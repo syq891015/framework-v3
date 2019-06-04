@@ -1,17 +1,14 @@
 package com.myland.framework.authority.file;
 
-import com.myland.framework.authority.config.ConfigService;
-import com.myland.framework.authority.consts.CacheConstants;
 import com.myland.framework.authority.domain.LoginUser;
-import com.myland.framework.authority.po.Config;
 import com.myland.framework.authority.po.File;
 import com.myland.framework.authority.utils.SystemConfig;
 import com.myland.framework.common.base.BaseController;
 import com.myland.framework.common.message.ResponseMsg;
-import com.myland.framework.logging.annotation.SysUserLog;
-import com.myland.framework.logging.consts.LogTypeEnum;
 import com.myland.framework.common.utils.validator.group.AddGroup;
 import com.myland.framework.common.utils.validator.group.UpdateGroup;
+import com.myland.framework.logging.annotation.SysUserLog;
+import com.myland.framework.logging.consts.LogTypeEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.validation.annotation.Validated;
@@ -35,9 +32,6 @@ import java.util.Map;
 public class FileController extends BaseController {
 	@Resource
 	private FileService fileService;
-
-	@Resource
-	private ConfigService configService;
 
 	/**
 	 * 列表
@@ -102,8 +96,10 @@ public class FileController extends BaseController {
 	 * 上传文件
 	 *
 	 * @param srcFiles 源文件
+	 * @param fileType 文件类型
+	 * @param loginUser 当前登录用户
 	 */
-	@RequestMapping(value = "/upload", method = RequestMethod.POST)
+	@PostMapping(value = "/upload")
 	@RequiresPermissions("sys:file:upload")
 	public ResponseMsg upload(@RequestParam("files") MultipartFile[] srcFiles, String fileType, LoginUser loginUser) {
 		try {
@@ -115,11 +111,30 @@ public class FileController extends BaseController {
 	}
 
 	/**
+	 * 上传文件
+	 *
+	 * @param data 源文件Base64字符串
+	 * @param fileType 文件类型
+	 * @param loginUser 当前登录用户
+	 */
+	@PostMapping(value = "/base64Up")
+	@RequiresPermissions("sys:file:upload")
+	public ResponseMsg base64Up(String data, String fileType, LoginUser loginUser) {
+		try {
+			return fileService.uploadFile(data, fileType, loginUser);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			return ResponseMsg.error(e.getMessage());
+		}
+	}
+
+	/**
 	 * 重新上传文件
 	 *
 	 * @param srcFile 源文件
+	 * @param loginUser 当前登录用户
 	 */
-	@RequestMapping(value = "/{id}/reUpload", method = RequestMethod.POST)
+	@PostMapping(value = "/{id}/reUpload")
 	@RequiresPermissions("sys:file:reUpload")
 	public ResponseMsg reUpload(@PathVariable("id") Long id, @RequestParam("files") MultipartFile srcFile, LoginUser loginUser) {
 		try {
