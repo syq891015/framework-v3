@@ -22,7 +22,7 @@ public abstract class WebUnitTest4SpringCtx {
 	@Autowired
 	public WebApplicationContext ctx;
 
-	public MockMvc mvc;
+	protected MockMvc mvc;
 
 	/**
 	 * 初始化 MVC 的环境

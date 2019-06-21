@@ -6,7 +6,7 @@ import com.myland.framework.authority.consts.CacheConstants;
 import com.myland.framework.authority.dao.ConfigDao;
 import com.myland.framework.authority.po.Config;
 import com.myland.framework.authority.utils.SystemConfig;
-import com.myland.framework.datasource.config.redis.CacheInitService;
+import com.myland.framework.datasource.config.redis.RedisCacheInitService;
 import com.myland.framework.datasource.config.redis.RedisUtils;
 import org.springframework.stereotype.Service;
 
@@ -24,9 +24,7 @@ import java.util.Map;
  * @date 2018-11-30 16:29:35
  */
 @Service("configService")
-public class ConfigServiceImpl implements ConfigService, CacheInitService {
-	@Resource
-	private RedisUtils redisUtils;
+public class ConfigServiceImpl extends RedisCacheInitService implements ConfigService {
 
 	@Resource
 	private ConfigDao configDao;

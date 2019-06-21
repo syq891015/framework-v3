@@ -1,13 +1,15 @@
 package com.myland.framework.authority.cache;
 
-import com.myland.framework.authority.po.File;
 import com.myland.framework.common.message.ResponseMsg;
 import com.myland.framework.datasource.config.redis.CacheInitService;
 import com.myland.framework.web.utils.SpringContextUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.HashMap;

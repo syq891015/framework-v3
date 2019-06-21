@@ -5,6 +5,8 @@ import com.myland.framework.authority.po.File;
 import com.myland.framework.authority.utils.SystemConfig;
 import com.myland.framework.common.base.BaseController;
 import com.myland.framework.common.message.ResponseMsg;
+import com.myland.framework.common.utils.validator.Assert;
+import com.myland.framework.common.utils.validator.ValidatorUtils;
 import com.myland.framework.common.utils.validator.group.AddGroup;
 import com.myland.framework.common.utils.validator.group.UpdateGroup;
 import com.myland.framework.logging.annotation.SysUserLog;
@@ -113,13 +115,17 @@ public class FileController extends BaseController {
 	/**
 	 * 上传文件
 	 *
-	 * @param data 源文件Base64字符串
-	 * @param fileType 文件类型
+	 * @param paramMap data 源文件Base64字符串，fileType 文件类型
 	 * @param loginUser 当前登录用户
 	 */
 	@PostMapping(value = "/base64Up")
 	@RequiresPermissions("sys:file:upload")
-	public ResponseMsg base64Up(String data, String fileType, LoginUser loginUser) {
+	public ResponseMsg base64Up(@RequestBody Map<String, String> paramMap, LoginUser loginUser) {
+		String data = paramMap.get("data");
+		String fileType = paramMap.get("fileType");
+		Assert.isNotBlank(data, "文件Base64参数为空");
+		Assert.isNotBlank(fileType, "文件类型参数为空");
+
 		try {
 			return fileService.uploadFile(data, fileType, loginUser);
 		} catch (Exception e) {

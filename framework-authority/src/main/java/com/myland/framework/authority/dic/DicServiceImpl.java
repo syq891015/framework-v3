@@ -7,7 +7,7 @@ import com.myland.framework.authority.consts.CacheConstants;
 import com.myland.framework.authority.dao.DicDao;
 import com.myland.framework.authority.po.BaseDic;
 import com.myland.framework.authority.po.Dic;
-import com.myland.framework.datasource.config.redis.CacheInitService;
+import com.myland.framework.datasource.config.redis.RedisCacheInitService;
 import com.myland.framework.datasource.config.redis.RedisUtils;
 import org.springframework.stereotype.Service;
 
@@ -26,12 +26,9 @@ import java.util.Map;
  * @date 2018-11-30 16:29:33
  */
 @Service("dicService")
-public class DicServiceImpl implements DicService, CacheInitService {
+public class DicServiceImpl extends RedisCacheInitService implements DicService {
 	@Resource
 	private DicDao dicDao;
-
-	@Resource
-	private RedisUtils redisUtils;
 
 	@Resource
 	private BaseDicService baseDicService;

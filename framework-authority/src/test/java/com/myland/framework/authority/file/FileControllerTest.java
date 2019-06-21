@@ -6,12 +6,15 @@ import com.myland.framework.test.WebUnitTest4SpringCtx;
 import org.apache.commons.io.FileUtils;
 import org.junit.Assert;
 import org.junit.Test;
+import org.springframework.http.MediaType;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -33,7 +36,12 @@ public class FileControllerTest extends WebUnitTest4SpringCtx {
 		List<String> stringList = FileUtils.readLines(file, StandardCharsets.UTF_8);
 		String base64 = stringList.get(0);
 
-		String res = mvc.perform(post("/sys/files/base64Up").param("data", base64).param("fileType", "Exam-Photo"))
+		Map<String, String> map = new HashMap<>(2);
+		map.put("data", base64);
+		map.put("fileType", "Exam-Photo");
+		String json = JsonUtils.toJSON(map);
+
+		String res = mvc.perform(post("/sys/files/base64Up").contentType(MediaType.APPLICATION_JSON_UTF8).content(json))
 				.andExpect(status().isOk())
 				.andDo(print())
 				.andReturn().getResponse().getContentAsString();
