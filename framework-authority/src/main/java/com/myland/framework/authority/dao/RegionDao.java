@@ -1,10 +1,10 @@
 package com.myland.framework.authority.dao;
 
 import com.myland.framework.authority.po.Region;
-import com.myland.framework.common.base.BaseDao;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 行政区划表
@@ -14,7 +14,19 @@ import java.util.List;
  * @date 2019-06-20 09:45:20
  */
 @Repository("regionDao")
-public interface RegionDao extends BaseDao<Region> {
+public interface RegionDao {
+
+	void insert(Region region);
+
+	void deleteByPrimaryKey(Long id);
+
+	void updateByPrimaryKeySelective(Region region);
+
+	Region selectByPrimaryKey(Long id);
+
+	List<Region> selectList(Map<String, Object> map);
+
+	List<Region> selectAll();
 
 	List<Region> selectChildren(int pid);
 }

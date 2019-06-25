@@ -1,7 +1,6 @@
 package com.myland.framework.authority.dao;
 
 import com.myland.framework.authority.po.Dic;
-import com.myland.framework.common.base.BaseDao;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,7 +14,19 @@ import java.util.Map;
  * @date 2018-11-30 16:29:33
  */
 @Repository("dicDao")
-public interface DicDao extends BaseDao<Dic> {
+public interface DicDao {
+
+	void insert(Dic dic);
+
+	void deleteByPrimaryKey(Long id);
+
+	void updateByPrimaryKeySelective(Dic dic);
+
+	Dic selectByPrimaryKey(Long id);
+
+	List<Dic> selectList(Map<String, Object> map);
+
+	List<Dic> selectAll();
 
 	/**
 	 * 同种字典目录下字典编码唯一性查询

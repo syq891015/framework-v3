@@ -1,7 +1,6 @@
 package com.myland.framework.authority.dao;
 
 import com.myland.framework.authority.po.BaseDic;
-import com.myland.framework.common.base.BaseDao;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,7 +14,19 @@ import java.util.Map;
  * @date 2018-11-30 16:29:34
  */
 @Repository("baseDicDao")
-public interface BaseDicDao extends BaseDao<BaseDic> {
+public interface BaseDicDao {
+
+	void insert(BaseDic baseDic);
+
+	void deleteByPrimaryKey(Long id);
+
+	void updateByPrimaryKeySelective(BaseDic baseDic);
+
+	BaseDic selectByPrimaryKey(Long id);
+
+	List<BaseDic> selectList(Map<String, Object> map);
+
+	List<BaseDic> selectAll();
 
 	/**
 	 * 根据编码查询字典目录数量（不包括自身）

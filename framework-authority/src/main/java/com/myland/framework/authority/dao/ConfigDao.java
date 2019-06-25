@@ -1,9 +1,9 @@
 package com.myland.framework.authority.dao;
 
 import com.myland.framework.authority.po.Config;
-import com.myland.framework.common.base.BaseDao;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -14,7 +14,19 @@ import java.util.Map;
  * @date 2018-11-30 16:29:35
  */
 @Repository("configDao")
-public interface ConfigDao extends BaseDao<Config> {
+public interface ConfigDao {
+
+	void insert(Config config);
+
+	void deleteByPrimaryKey(Long id);
+
+	void updateByPrimaryKeySelective(Config config);
+
+	Config selectByPrimaryKey(Long id);
+
+	List<Config> selectList(Map<String, Object> map);
+
+	List<Config> selectAll();
 
 	/**
 	 * 查询配置键的数量

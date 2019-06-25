@@ -1,7 +1,6 @@
 package com.myland.framework.authority.dao;
 
 import com.myland.framework.authority.po.Role;
-import com.myland.framework.common.base.BaseDao;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,7 +14,19 @@ import java.util.Map;
  * @date 2018-11-30 16:29:35
  */
 @Repository("roleDao")
-public interface RoleDao extends BaseDao<Role> {
+public interface RoleDao {
+
+	void insert(Role role);
+
+	void deleteByPrimaryKey(Long id);
+
+	void updateByPrimaryKeySelective(Role role);
+
+	Role selectByPrimaryKey(Long id);
+
+	List<Role> selectList(Map<String, Object> map);
+
+	List<Role> selectAll();
 
 	/**
 	 * 根据角色ID获得该角色下的菜单ID集合

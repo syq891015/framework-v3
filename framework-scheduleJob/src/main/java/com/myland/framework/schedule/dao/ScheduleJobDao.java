@@ -1,9 +1,9 @@
 package com.myland.framework.schedule.dao;
 
-import com.myland.framework.common.base.BaseDao;
 import com.myland.framework.schedule.po.ScheduleJobEntity;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -12,7 +12,19 @@ import java.util.Map;
  * @author SunYanQing
  */
 @Repository
-public interface ScheduleJobDao extends BaseDao<ScheduleJobEntity> {
+public interface ScheduleJobDao {
+
+	void insert(ScheduleJobEntity scheduleJobEntity);
+
+	void deleteByPrimaryKey(Long id);
+
+	void updateByPrimaryKeySelective(ScheduleJobEntity scheduleJobEntity);
+
+	ScheduleJobEntity selectByPrimaryKey(Long id);
+
+	List<ScheduleJobEntity> selectList(Map<String, Object> map);
+
+	List<ScheduleJobEntity> selectAll();
 	
 	/**
 	 * 批量更新状态

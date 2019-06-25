@@ -1,7 +1,6 @@
 package com.myland.framework.authority.dao;
 
 import com.myland.framework.authority.po.User;
-import com.myland.framework.common.base.BaseDao;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,7 +14,19 @@ import java.util.Map;
  * @date 2018-11-30 16:29:34
  */
 @Repository("userDao")
-public interface UserDao extends BaseDao<User> {
+public interface UserDao {
+
+	void insert(User user);
+
+	void deleteByPrimaryKey(Long id);
+
+	void updateByPrimaryKeySelective(User User);
+
+	User selectByPrimaryKey(Long id);
+
+	List<User> selectList(Map<String, Object> map);
+
+	List<User> selectAll();
 
 	/**
 	 * 根据账号查询用户信息
