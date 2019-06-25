@@ -6,6 +6,7 @@ framework-logging/target/
 framework-scheduleJob/target/
 framework-shiro/target/
 framework-web/target/
+framework-test/target/
 *.iml
 logs/
 tasklist.md
