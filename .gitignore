@@ -1,12 +1,5 @@
 .idea/
-framework-authority/target/
-framework-common/target/
-framework-datasource/target/
-framework-logging/target/
-framework-scheduleJob/target/
-framework-shiro/target/
-framework-web/target/
-framework-test/target/
+framework-*/target/
 *.iml
 logs/
 tasklist.md
