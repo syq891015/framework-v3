@@ -1,7 +1,6 @@
 package com.myland.framework.schedule.job;
 
 import com.github.pagehelper.PageInfo;
-import com.myland.framework.common.base.BaseService;
 import com.myland.framework.schedule.po.ScheduleJobEntity;
 
 import java.util.List;
@@ -11,37 +10,19 @@ import java.util.Map;
  * 定时任务
  * @author SunYanQing
  */
-public interface ScheduleJobService extends BaseService<ScheduleJobEntity> {
+public interface ScheduleJobService {
 
-	@Override
-	default void save(ScheduleJobEntity scheduleJobEntity) {
+	void save(ScheduleJobEntity scheduleJobEntity);
 
-	}
+	void delete(Long id);
 
-	@Override
-	default void delete(Long id) {
+	void update(ScheduleJobEntity scheduleJobEntity);
 
-	}
+	ScheduleJobEntity getObjById(Long id);
 
-	@Override
-	default void update(ScheduleJobEntity scheduleJobEntity) {
+	PageInfo<ScheduleJobEntity> getList4Page(Map<String, Object> map);
 
-	}
-
-	@Override
-	default ScheduleJobEntity getObjById(Long id) {
-		return null;
-	}
-
-	@Override
-	default PageInfo<ScheduleJobEntity> getList4Page(Map<String, Object> map) {
-		return null;
-	}
-
-	@Override
-	default List<ScheduleJobEntity> getAll() {
-		return null;
-	}
+	List<ScheduleJobEntity> getAll();
 
 	/**
 	 * 批量更新定时任务状态

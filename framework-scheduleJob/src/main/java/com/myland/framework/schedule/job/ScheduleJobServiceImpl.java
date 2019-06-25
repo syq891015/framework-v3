@@ -84,6 +84,11 @@ public class ScheduleJobServiceImpl implements ScheduleJobService {
 	}
 
 	@Override
+	public List<ScheduleJobEntity> getAll() {
+		return null;
+	}
+
+	@Override
 	public int updateBatch(List<Long> jobIds, int status) {
 		Map<String, Object> map = new HashMap<>(2);
 		map.put("list", jobIds);

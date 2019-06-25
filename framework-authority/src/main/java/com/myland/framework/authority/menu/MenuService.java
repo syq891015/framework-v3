@@ -2,7 +2,6 @@ package com.myland.framework.authority.menu;
 
 import com.github.pagehelper.PageInfo;
 import com.myland.framework.authority.po.Menu;
-import com.myland.framework.common.base.BaseService;
 
 import java.util.List;
 import java.util.Map;
@@ -14,37 +13,19 @@ import java.util.Map;
  * @version 1.0
  * @date 2018-11-30 16:29:34
  */
-public interface MenuService extends BaseService<Menu> {
+public interface MenuService {
 
-	@Override
-	default void save(Menu menu) {
+	void save(Menu menu);
 
-	}
+	void delete(Long id);
 
-	@Override
-	default void delete(Long id) {
+	void update(Menu menu);
 
-	}
+	Menu getObjById(Long id);
 
-	@Override
-	default void update(Menu menu) {
+	PageInfo<Menu> getList4Page(Map<String, Object> map);
 
-	}
-
-	@Override
-	default Menu getObjById(Long id) {
-		return null;
-	}
-
-	@Override
-	default PageInfo<Menu> getList4Page(Map<String, Object> map) {
-		return null;
-	}
-
-	@Override
-	default List<Menu> getAll() {
-		return null;
-	}
+	List<Menu> getAll();
 
 	/**
 	 * 根据用户ID获得经授权的权限集合

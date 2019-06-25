@@ -2,7 +2,6 @@ package com.myland.framework.authority.config;
 
 import com.github.pagehelper.PageInfo;
 import com.myland.framework.authority.po.Config;
-import com.myland.framework.common.base.BaseService;
 
 import java.util.List;
 import java.util.Map;
@@ -14,37 +13,19 @@ import java.util.Map;
  * @version 1.0
  * @date 2018-11-30 16:29:35
  */
-public interface ConfigService extends BaseService<Config> {
+public interface ConfigService {
 
-	@Override
-	default void save(Config config) {
+	void save(Config config);
 
-	}
+	void delete(Long id);
 
-	@Override
-	default void delete(Long id) {
+	void update(Config config);
 
-	}
+	Config getObjById(Long id);
 
-	@Override
-	default void update(Config config) {
+	PageInfo<Config> getList4Page(Map<String, Object> map);
 
-	}
-
-	@Override
-	default Config getObjById(Long id) {
-		return null;
-	}
-
-	@Override
-	default PageInfo<Config> getList4Page(Map<String, Object> map) {
-		return null;
-	}
-
-	@Override
-	default List<Config> getAll() {
-		return null;
-	}
+	List<Config> getAll();
 
 	/**
 	 * 检查系统配置键的唯一性

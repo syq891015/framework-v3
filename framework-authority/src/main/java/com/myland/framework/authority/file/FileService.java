@@ -2,7 +2,6 @@ package com.myland.framework.authority.file;
 
 import com.github.pagehelper.PageInfo;
 import com.myland.framework.authority.domain.LoginUser;
-import com.myland.framework.common.base.BaseService;
 import com.myland.framework.authority.po.File;
 import com.myland.framework.common.message.ResponseMsg;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,37 +16,19 @@ import java.util.Map;
  * @version 1.0
  * @date 2019-04-10 15:44:34
  */
-public interface FileService extends BaseService<File> {
+public interface FileService {
 
-	@Override
-	default void save(File file) {
+	void save(File file);
 
-	}
+	void delete(Long id);
 
-	@Override
-	default void delete(Long id) {
+	void update(File file);
 
-	}
+	File getObjById(Long id);
 
-	@Override
-	default void update(File file) {
+	PageInfo<File> getList4Page(Map<String, Object> map);
 
-	}
-
-	@Override
-	default File getObjById(Long id) {
-		return null;
-	}
-
-	@Override
-	default PageInfo<File> getList4Page(Map<String, Object> map) {
-		return null;
-	}
-
-	@Override
-	default List<File> getAll() {
-		return null;
-	}
+	List<File> getAll();
 
 	/**
 	 * 批量上传文件

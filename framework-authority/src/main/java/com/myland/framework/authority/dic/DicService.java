@@ -2,7 +2,6 @@ package com.myland.framework.authority.dic;
 
 import com.github.pagehelper.PageInfo;
 import com.myland.framework.authority.po.Dic;
-import com.myland.framework.common.base.BaseService;
 
 import java.util.List;
 import java.util.Map;
@@ -14,37 +13,19 @@ import java.util.Map;
  * @version 1.0
  * @date 2018-11-30 16:29:33
  */
-public interface DicService extends BaseService<Dic> {
+public interface DicService {
 
-	@Override
-	default void save(Dic dic) {
+	void save(Dic dic);
 
-	}
+	void delete(Long id);
 
-	@Override
-	default void delete(Long id) {
+	void update(Dic dic);
 
-	}
+	Dic getObjById(Long id);
 
-	@Override
-	default void update(Dic dic) {
+	PageInfo<Dic> getList4Page(Map<String, Object> map);
 
-	}
-
-	@Override
-	default Dic getObjById(Long id) {
-		return null;
-	}
-
-	@Override
-	default PageInfo<Dic> getList4Page(Map<String, Object> map) {
-		return null;
-	}
-
-	@Override
-	default List<Dic> getAll() {
-		return null;
-	}
+	List<Dic> getAll();
 
 	/**
 	 * 检查同种字典目录下字典编码的唯一性

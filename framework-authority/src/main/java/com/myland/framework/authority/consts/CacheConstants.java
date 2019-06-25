@@ -23,4 +23,14 @@ public class CacheConstants {
 	 * Key，字典集合
 	 */
 	public static final String KEY_DIC_LIST = "DIC_LIST";
+
+	/**
+	 * {id: Region}
+	 */
+	public static final String REGION_MAP = "REGION_MAP";
+
+	/**
+	 * {pid: [children]}
+	 */
+	public static final String REGION_CHILDREN = "REGION_CHILDREN";
 }

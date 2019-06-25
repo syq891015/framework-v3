@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.myland.framework.authority.dao.RegionDao">
+
+    <insert id="insert" parameterType="Region">
+        INSERT INTO sys_region
+        (
+        `id`,
+        `pid`,
+        `pids`,
+        `name`,
+        `lev`,
+        `sn`,
+        `post_code`
+        )
+        VALUES
+        (
+        #{id},
+        #{pid},
+        #{pids},
+        #{name},
+        #{lev},
+        #{sn},
+        #{postCode}
+        )
+	</insert>
+
+    <delete id="deleteByPrimaryKey">
+        DELETE FROM sys_region WHERE id = #{value}
+    </delete>
+
+    <update id="updateByPrimaryKeySelective" parameterType="Region">
+        UPDATE sys_region
+        <set>
+            <if test="pid != null">`pid` =
+                #{pid},
+            </if>
+            <if test="pids != null">`pids` =
+                #{pids},
+            </if>
+            <if test="name != null">`name` =
+                #{name},
+            </if>
+            <if test="lev != null">`lev` =
+                #{lev},
+            </if>
+            <if test="sn != null">`sn` =
+                #{sn},
+            </if>
+            <if test="postCode != null">`post_code` =
+                #{postCode}
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <select id="selectByPrimaryKey" resultType="Region">
+        SELECT * FROM sys_region WHERE id = #{value}
+    </select>
+
+    <select id="selectList" resultType="Region">
+        SELECT
+        sys_region.*
+        FROM sys_region
+        <where>
+            <if test="pids != null">
+                AND sys_region.pids LIKE CONCAT('%', #{pids}, '%')
+            </if>
+            <if test="name != null">
+                AND sys_region.name LIKE CONCAT('%', #{name}, '%')
+            </if>
+            <if test="postCode != null">
+                AND sys_region.post_code LIKE CONCAT('%', #{postCode}, '%')
+            </if>
+        </where>
+        ORDER BY sys_region.id DESC
+    </select>
+
+    <select id="selectAll" resultType="Region">
+        SELECT * FROM sys_region
+    </select>
+
+    <!-- 自定义sql -->
+    <!-- 根据父区划ID获得所有子区划 -->
+    <select id="selectChildren" resultType="Region">
+        SELECT sys_region.* FROM sys_region WHERE pid = #{value}
+    </select>
+
+</mapper>

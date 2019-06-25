@@ -2,7 +2,6 @@ package com.myland.framework.authority.baseDic;
 
 import com.github.pagehelper.PageInfo;
 import com.myland.framework.authority.po.BaseDic;
-import com.myland.framework.common.base.BaseService;
 
 import java.util.List;
 import java.util.Map;
@@ -14,37 +13,19 @@ import java.util.Map;
  * @version 1.0
  * @date 2018-11-30 16:29:34
  */
-public interface BaseDicService extends BaseService<BaseDic> {
+public interface BaseDicService {
 
-	@Override
-	default void save(BaseDic baseDic) {
+	void save(BaseDic baseDic);
 
-	}
+	void delete(Long id);
 
-	@Override
-	default void delete(Long id) {
+	void update(BaseDic baseDic);
 
-	}
+	BaseDic getObjById(Long id);
 
-	@Override
-	default void update(BaseDic baseDic) {
+	PageInfo<BaseDic> getList4Page(Map<String, Object> map);
 
-	}
-
-	@Override
-	default BaseDic getObjById(Long id) {
-		return null;
-	}
-
-	@Override
-	default PageInfo<BaseDic> getList4Page(Map<String, Object> map) {
-		return null;
-	}
-
-	@Override
-	default List<BaseDic> getAll() {
-		return null;
-	}
+	List<BaseDic> getAll();
 
 	/**
 	 * 检查字典目录编码是否重复

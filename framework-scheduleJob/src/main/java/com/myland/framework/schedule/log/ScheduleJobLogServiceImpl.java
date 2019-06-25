@@ -7,6 +7,7 @@ import com.myland.framework.schedule.po.ScheduleJobLogEntity;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,6 +26,16 @@ public class ScheduleJobLogServiceImpl implements ScheduleJobLogService {
 	}
 
 	@Override
+	public void delete(Long id) {
+
+	}
+
+	@Override
+	public void update(ScheduleJobLogEntity scheduleJobLogEntity) {
+
+	}
+
+	@Override
 	public ScheduleJobLogEntity getObjById(Long id) {
 		return scheduleJobLogDao.selectByPrimaryKey(id);
 	}
@@ -35,5 +46,10 @@ public class ScheduleJobLogServiceImpl implements ScheduleJobLogService {
 		String pageSize = (String) map.get("pageSize");
 		PageHelper.startPage(Integer.parseInt(pageNum), Integer.parseInt(pageSize));
 		return new PageInfo<>(scheduleJobLogDao.selectList(map));
+	}
+
+	@Override
+	public List<ScheduleJobLogEntity> getAll() {
+		return null;
 	}
 }

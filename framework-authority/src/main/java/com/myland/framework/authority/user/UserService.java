@@ -2,9 +2,7 @@ package com.myland.framework.authority.user;
 
 import com.github.pagehelper.PageInfo;
 import com.myland.framework.authority.po.User;
-import com.myland.framework.common.base.BaseService;
 
-import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -16,37 +14,19 @@ import java.util.Set;
  * @version 1.0
  * @date 2018-11-30 16:29:34
  */
-public interface UserService extends BaseService<User> {
+public interface UserService {
 
-	@Override
-	default void save(User user) {
+	void save(User user);
 
-	}
+	void delete(Long id);
 
-	@Override
-	default void delete(Long id) {
+	void update(User user);
 
-	}
+	User getObjById(Long id);
 
-	@Override
-	default void update(User user) {
+	PageInfo<User> getList4Page(Map<String, Object> map);
 
-	}
-
-	@Override
-	default User getObjById(Long id) {
-		return null;
-	}
-
-	@Override
-	default PageInfo<User> getList4Page(Map<String, Object> map) {
-		return null;
-	}
-
-	@Override
-	default List<User> getAll() {
-		return null;
-	}
+	List<User> getAll();
 
 	Set<String> getUserPermissions(Long userId);
 
