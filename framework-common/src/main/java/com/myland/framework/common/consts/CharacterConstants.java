@@ -93,4 +93,14 @@ public class CharacterConstants {
 	 * 正斜杠/
 	 */
 	public static final String FORWARD_SLASH = "/";
+
+	/**
+	 * new line
+	 */
+	public static final String NEW_LINE = "\n";
+
+	/**
+	 * Return
+	 */
+	public static final String RETURN = "\r";
 }

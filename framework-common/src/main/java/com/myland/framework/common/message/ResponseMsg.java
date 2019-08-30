@@ -91,6 +91,14 @@ public class ResponseMsg extends HashMap<String, Object> {
 		return this.get(R_KEY_DATA);
 	}
 
+	public int getCode() {
+		return (int) this.get(R_KEY_CODE);
+	}
+
+	public String getMsg() {
+		return (String) this.get(R_KEY_MSG);
+	}
+
 	@Override
 	public ResponseMsg put(String key, Object value) {
 		super.put(key, value);
