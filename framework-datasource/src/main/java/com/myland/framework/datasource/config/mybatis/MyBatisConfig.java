@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
+import org.mybatis.spring.boot.autoconfigure.SpringBootVFS;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -46,6 +47,12 @@ public class MyBatisConfig {
 	public SqlSessionFactory sqlSessionFactory() {
 		SqlSessionFactoryBean sqlSession = new MybatisSqlSessionFactoryBean();
 		sqlSession.setDataSource(dataSource);
+		/*
+		 * SpringBootVFS 是类扫描器
+		 * 打包成jar时，setTypeAliasesPackage(“xxx”)找不到类的问题。MyBatis通过VFS来扫描，
+		 * 在Spring Boot中由于是嵌套Jar，导致Mybatis默认的VFS实现DefaultVFS无法扫描嵌套Jar中的类，需要改成SpringBootVFS扫描
+		 */
+		sqlSession.setVfs(SpringBootVFS.class);
 		// 扫描entity包 使用别名
 		sqlSession.setTypeAliasesPackage(typeAliasesPackages);
 		org.apache.ibatis.session.Configuration configuration = new org.apache.ibatis.session.Configuration();
