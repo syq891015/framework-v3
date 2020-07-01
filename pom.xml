@@ -33,7 +33,7 @@
         <fastjson.version>1.2.49</fastjson.version>
         <shiro.version>1.4.0</shiro.version>
         <shiro-redis.version>3.2.1</shiro-redis.version>
-        <quartz.version>2.3.0</quartz.version>
+        <quartz.version>2.3.2</quartz.version>
         <kaptcha.version>0.0.9</kaptcha.version>
         <hutool.version>4.5.0</hutool.version>
         <commons-collections4.version>4.3</commons-collections4.version>
